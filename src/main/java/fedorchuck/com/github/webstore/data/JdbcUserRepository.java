@@ -23,33 +23,32 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     public User save(User user) {
-      /*  jdbc.update(
-                "insert into Spitter (username, password, first_name, last_name, email)" +
-                        " values (?, ?, ?, ?, ?)",
-                user.getUsername(),
-                user.getPassword(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail());*/
+        jdbc.update(
+            "insert into users (id, username, password, email, firstname, lastname ) values (?, ?, ?, ?, ?, ?)",
+            user.getId(),
+            user.getUsername(),
+            user.getPassword(),
+            user.getEmail(),
+            user.getFirstName(),
+            user.getLastName()
+            );
         return user; // TODO: Determine value for id
     }
 
     public User findByUsername(String username) {
-        return new User();/*jdbc.queryForObject(
-                "select id, username, null, first_name, last_name, email from Spitter where username=?",
-                new SpitterRowMapper(),
-                username);*/
+        return jdbc.queryForObject("select id, username, password, firstname, lastname, email from users where username=?",
+                new UserRowMapper(), username );
     }
 
-    private static class SpitterRowMapper implements RowMapper<User> {
+    private static class UserRowMapper implements RowMapper<User> {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User();/*
+            return new User(
                     rs.getInt("id"), //TODO: check this place.
                     rs.getString("username"),
-                    null,
-                    rs.getString("first_name"),
-                    rs.getString("last_name"),
-                    rs.getString("email"));*/
+                    rs.getString("password"),
+                    rs.getString("firstname"),
+                    rs.getString("lastname"),
+                    rs.getString("email"));
         }
     }
 

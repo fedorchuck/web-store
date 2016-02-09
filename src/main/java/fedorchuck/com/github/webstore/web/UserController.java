@@ -29,7 +29,8 @@ public class UserController {
     }
 
     @RequestMapping(value="register", method=GET)
-    public String showRegistrationForm() {
+    public String showRegistrationForm(Model model) {
+        model.addAttribute(new User());
         return "registerForm";
     }
 
@@ -38,44 +39,13 @@ public class UserController {
         return "authorizeForm";
     }
 
-    @RequestMapping(value = "/cancel", method = POST)
-    public String processHome(@Valid User user,
-                              Errors errors){
-        //return "redirect:/";
-        return "redirect:/bitch!";
-    }
-
-
-    @RequestMapping(value="/register", method=POST)
-    public String processRegistration(
-            @Valid User user,
-            Errors errors) {
-        return "redirect:/fuck u";
-      /*  if (errors.hasErrors()) {
-            return "registerForm";
-        }
-
-        userRepository.save(user);
-        return "redirect:/user/" + user.getUsername();*/
-    }
-
-    @RequestMapping(value="/{username}", method=GET)
-    public String showUserProfile(@PathVariable String username, Model model) {
-        User user = userRepository.findByUsername(username);
-        model.addAttribute(user);
-        return "profile";
-    }
-
-/*
-    //@RequestMapping(value="/register", method=POST)
-    @RequestMapping(value="/register", method=POST)
+    @RequestMapping(value="register", method=POST)
     public String processRegistration(
             @Valid User user,
             Errors errors) {
         if (errors.hasErrors()) {
             return "registerForm";
         }
-
         userRepository.save(user);
         return "redirect:/user/" + user.getUsername();
     }
@@ -86,6 +56,5 @@ public class UserController {
         model.addAttribute(user);
         return "profile";
     }
-*/
 
 }

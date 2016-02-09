@@ -3,10 +3,12 @@ apply plugin: 'war'
 dependencies {
     compile "org.springframework:spring-webmvc:$springVersion"
     compile "org.springframework:spring-jdbc:$springVersion"
-    compile "com.h2database:h2:$h2Version"
+    //compile "com.h2database:h2:$h2Version"
+    compile "org.postgresql:postgresql:$postgresqlVercion"
 
     compile "org.hibernate:hibernate-validator:$hibernateValidatorVersion"
     compile "org.apache.commons:commons-lang3:$commonsLangVersion"
+
 
     compile "javax.servlet:jstl:$jstlVersion"
     providedCompile "javax.servlet:javax.servlet-api:$servletApiVersion"
