@@ -1,5 +1,8 @@
 package fedorchuck.com.github.webstore.config;
 
+import jdk.nashorn.internal.runtime.OptimisticReturnFilters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -8,6 +11,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +25,8 @@ public class DataConfig {
     private String url;
     private String username;
     private String password;
+
+    private final static Logger logger = LoggerFactory.getLogger(DataConfig.class);
 
     public DataConfig() {
         readConfig();
@@ -41,6 +47,13 @@ public class DataConfig {
         dataSource.setUrl("jdbc:postgresql://localhost:5432/webstore");;
         dataSource.setUsername("postgres");
         dataSource.setPassword("lucky strike");
+        logger.info("INFO: dataSource: " + dataSource.toString());
+        logger.error("ERROR: dataSource: " + dataSource.toString());
+        logger.warn("WARN: dataSource: " + dataSource.toString());
+
+
+
+
         return dataSource;
     }
 
@@ -109,6 +122,7 @@ public class DataConfig {
 
         } catch (IOException |
                 IndexOutOfBoundsException |
+                IllegalAccessException |
                 NullPointerException e) {
             //TODO: log: "ERROR: unable to read file " + configFile.
         } finally {
@@ -122,7 +136,7 @@ public class DataConfig {
     /**
      * temporary code below
      */
-    private void setValues(Map data){
+    private void setValues(Map data) throws IllegalAccessException {
         PrintWriter writer = null;  // = new PrintWriter("WEB-STORE", "UTF-8");
         // way glassfish4/glassfish/domains/domain1/config
 
@@ -130,9 +144,24 @@ public class DataConfig {
             writer = new PrintWriter("WEB-STORE", "UTF-8");
 
             writer.println(" this.getClass().getDeclaredFields().length: " + this.getClass().getDeclaredFields().length);
-            for (int i = 0; i < this.getClass().getDeclaredFields().length; i++) {
+            /*for (int i = 0; i < this.getClass().getDeclaredFields().length; i++) {
                 writer.println(this.getClass().getDeclaredFields()[i].getName());
+            }*/
+
+            Field[] fields = this.getClass().getSuperclass().getDeclaredFields();
+
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].getType();
+                fields[i].getName();
+
+
+
+                if (data.containsKey(fields[i].getName())) {
+                    fields[i].setAccessible(true);
+                    fields[i].set(null, data.get(fields[i].getName()));
+                }
             }
+
 
 /*            writer.println(" this.getClass().getDeclaredFields().length: " + this.getClass().getDeclaredFields().toString());
 
@@ -145,10 +174,11 @@ public class DataConfig {
                 writer.println("value " + this.getClass().getDeclaredFields()[i] + "\n");
             }*/
         } catch (IOException |
-            IndexOutOfBoundsException |
-            NullPointerException e) {
-            writer.println("fatal error" + e + " reason " + e.getMessage());
-            //TODO: log: "ERROR: unable to read file " + configFile.
+                IndexOutOfBoundsException |
+                IllegalAccessException |
+                NullPointerException e) {
+                writer.println("fatal error" + e + " reason " + e.getMessage());
+                //TODO: log: "ERROR: unable to read file " + configFile.
         } finally {
             writer.println("try take value of fild 'url': " + getUrl());
             writer.println("end.");
