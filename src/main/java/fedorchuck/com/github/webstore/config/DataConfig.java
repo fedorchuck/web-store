@@ -1,7 +1,10 @@
 package fedorchuck.com.github.webstore.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -17,13 +20,13 @@ import java.util.Map;
 @Configuration
 public class DataConfig {
 
+    private ResourceLoader resourceLoader;
     private String driverClassName;
     private String url;
     private String username;
     private String password;
 
     public DataConfig() {
-        readConfig();
     }
 
     @Bean
@@ -42,6 +45,13 @@ public class DataConfig {
         dataSource.setUsername("postgres");
         dataSource.setPassword("lucky strike");
         return dataSource;
+    }
+
+    @Autowired
+    public void setResourceLoader(ResourceLoader resourceLoader)
+    {
+        this.resourceLoader = resourceLoader;
+        readConfig();
     }
 
     @Bean
@@ -87,10 +97,16 @@ public class DataConfig {
      */
     @SuppressWarnings("unchecked")
     private void readConfig() {
-        String configFile = "/home/v/Documents/projects/web-store/src/main/resources/jdbc.properties";
+        Resource res= resourceLoader.getResource("classpath:../jdbc.properties");
+        if(!res.exists()){
+            res= resourceLoader.getResource("classpath:jdbc.properties");
+            if(!res.exists()){
+                throw new IllegalStateException("Can't read configuratiuon for jdbc.properties");
+            }
+        }
         BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(configFile)));
+        try (InputStream is = res.getInputStream()){
+            br = new BufferedReader(new InputStreamReader(is));
             String line;
             String[] parts;
             Map config = new HashMap();
