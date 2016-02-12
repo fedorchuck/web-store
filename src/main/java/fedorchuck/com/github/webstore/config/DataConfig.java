@@ -1,7 +1,6 @@
 package fedorchuck.com.github.webstore.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import jdk.nashorn.internal.runtime.OptimisticReturnFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -32,37 +31,19 @@ public class DataConfig {
 
     private final static Logger logger = LoggerFactory.getLogger(DataConfig.class);
 
-    public DataConfig() {
-    }
-
     @Bean
-    public DataSource dataSource(){//String driverClassName, String url, String username, String password) {
-
-        /*DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    public DataSource dataSource(){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
-        return dataSource;*/
-
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/webstore");;
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("lucky strike");
-        logger.info("INFO: dataSource: " + dataSource.toString());
-        logger.error("ERROR: dataSource: " + dataSource.toString());
-        logger.warn("WARN: dataSource: " + dataSource.toString());
-
-
-
 
         return dataSource;
     }
 
     @Autowired
-    public void setResourceLoader(ResourceLoader resourceLoader)
-    {
+    public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
         readConfig();
     }
@@ -105,7 +86,6 @@ public class DataConfig {
     }
 
     /**
-     * temporary code below
      * annotation and xml don't want work, like i want. but wrote configuration data in code i don't want. so.. :(
      */
     @SuppressWarnings("unchecked")
@@ -114,7 +94,9 @@ public class DataConfig {
         if(!res.exists()){
             res= resourceLoader.getResource("classpath:jdbc.properties");
             if(!res.exists()){
-                throw new IllegalStateException("Can't read configuratiuon for jdbc.properties");
+                String massageError = "Can't read configuration for jdbc.properties";
+                logger.error("problem read config. reason: ", massageError);
+                throw new IllegalStateException(massageError);
             }
         }
         BufferedReader br = null;
@@ -128,76 +110,34 @@ public class DataConfig {
                 if (line.isEmpty()) break;
 
                 parts = line.split("=");
+
                 parts[0] = parts[0].replace("jdbc.","");
                 parts[1] = parts[1].replace("\\","");
 
                 config.put(parts[0], parts[1]);
             }
 
-            setValues(config);
+            setFieldsValues(config);
 
         } catch (IOException |
                 IllegalAccessException |
-                IndexOutOfBoundsException |
                 NullPointerException e) {
-            //TODO: log: "ERROR: unable to read file " + configFile.
+            logger.error("problem read config. reason: ", e);
         } finally {
             try {
                 br.close();
-            } catch (IOException ignore) {}
+            } catch (IOException ignore) { }
         }
-
     }
 
-    /**
-     * temporary code below
-     */
-    private void setValues(Map data) throws IllegalAccessException {
-        PrintWriter writer = null;  // = new PrintWriter("WEB-STORE", "UTF-8");
-        // way glassfish4/glassfish/domains/domain1/config
+    private void setFieldsValues(Map data) throws IllegalAccessException {
+        Field[] fields = this.getClass().getSuperclass().getDeclaredFields();
 
-        try {
-            writer = new PrintWriter("WEB-STORE", "UTF-8");
-
-            writer.println(" this.getClass().getDeclaredFields().length: " + this.getClass().getDeclaredFields().length);
-            /*for (int i = 0; i < this.getClass().getDeclaredFields().length; i++) {
-                writer.println(this.getClass().getDeclaredFields()[i].getName());
-            }*/
-
-            Field[] fields = this.getClass().getSuperclass().getDeclaredFields();
-
-            for (int i = 0; i < fields.length; i++) {
-                fields[i].getType();
-                fields[i].getName();
-
-
-
-                if (data.containsKey(fields[i].getName())) {
-                    fields[i].setAccessible(true);
-                    fields[i].set(null, data.get(fields[i].getName()));
-                }
+        for (Field field : fields) {
+            if (data.containsKey(field.getName())) {
+                field.setAccessible(true);
+                field.set(this, data.get(field.getName()));
             }
-
-/*            writer.println(" this.getClass().getDeclaredFields().length: " + this.getClass().getDeclaredFields().toString());
-
-            for (int i = 0; i < this.getClass().getDeclaredFields().length; i++) {
-                writer.print("filed " + this.getClass().getDeclaredFields()[i].getType().getName().toString());
-
-                this.getClass().getDeclaredFields()[i].setAccessible(true);
-
-                //->this.getClass().getDeclaredFields()[i].set(null, this.getClass().getDeclaredFields()[i]);
-                writer.println("value " + this.getClass().getDeclaredFields()[i] + "\n");
-            }*/
-        } catch (IOException |
-                IndexOutOfBoundsException |
-                IllegalAccessException |
-                NullPointerException e) {
-                writer.println("fatal error" + e + " reason " + e.getMessage());
-                //TODO: log: "ERROR: unable to read file " + configFile.
-        } finally {
-            writer.println("try take value of fild 'url': " + getUrl());
-            writer.println("end.");
-            writer.close();
         }
     }
 }

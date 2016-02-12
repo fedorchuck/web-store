@@ -4,6 +4,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import javax.validation.Valid;
 
+import fedorchuck.com.github.webstore.AuthorizeUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "authorize", method = GET)
-    public String showAuthorizationForm() {
+    public String showAuthorizationForm(Model model) {
+        model.addAttribute(new AuthorizeUser());
         return "authorizeForm";
     }
 
@@ -48,6 +50,20 @@ public class UserController {
         }
         userRepository.save(user);
         return "redirect:/user/" + user.getUsername();
+    }
+
+    @RequestMapping(value="authorize", method=POST)
+    public String processAuthorization(
+            @Valid AuthorizeUser authorizeUser,
+            Errors errors) {
+        if (errors.hasErrors()) {
+            return "authorizeForm";
+        }
+        if (authorizeUser.check(userRepository)) return "redirect:/user/" + authorizeUser.getUser(userRepository).getUsername();
+        else {
+            errors.reject("username or password is incorrect");
+            return "authorizeForm";
+        }
     }
 
     @RequestMapping(value="/{username}", method=GET)

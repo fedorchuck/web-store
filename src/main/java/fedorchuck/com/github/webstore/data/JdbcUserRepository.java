@@ -2,6 +2,7 @@ package fedorchuck.com.github.webstore.data;
 
 import fedorchuck.com.github.webstore.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -36,14 +37,21 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     public User findByUsername(String username) {
-        return jdbc.queryForObject("select id, username, password, firstname, lastname, email from users where username=?",
-                new UserRowMapper(), username );
+        try {
+            return jdbc.queryForObject(
+                    "select id, username, password, firstname, lastname, email from users where username=?",
+                    new UserRowMapper(),
+                    username);
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     private static class UserRowMapper implements RowMapper<User> {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new User(
-                    rs.getInt("id"), //TODO: check this place.
+                    rs.getInt("id"),
                     rs.getString("username"),
                     rs.getString("password"),
                     rs.getString("firstname"),

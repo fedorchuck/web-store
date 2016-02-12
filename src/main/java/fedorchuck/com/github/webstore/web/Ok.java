@@ -14,6 +14,7 @@ import java.io.IOException;
  */
 @Controller
 @WebServlet("/ok")
+@Deprecated
 public class Ok extends HttpServlet {
 
     @Override
