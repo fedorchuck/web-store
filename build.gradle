@@ -1,4 +1,9 @@
-apply plugin: 'war'
+
+plugins {
+    id 'war'
+    id 'jetty'
+    id "jp.empressia.glassfish" version "0.2.5"
+}
 
 dependencies {
     compile "org.springframework:spring-webmvc:$springVersion"
@@ -29,6 +34,8 @@ repositories {
     mavenCentral()
 }
 
+
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.1'
 }
@@ -36,15 +43,17 @@ task wrapper(type: Wrapper) {
 war {
     baseName = 'web-store'
 }
-
+glassfish {
+    homeDirectoryPath =  "$glassfishHome" ;
+}
 /**
  *  For more information about Exec tasks see
  *  http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.Exec.html
  */
-task run(dependsOn: 'war', type:Exec){
-    workingDir "/home/v/Programs/glassfish4/bin"
-
-    commandLine "./asadmin"
-
-    args "deploy", "--force=true", "${war.archivePath}"
-}
+//task run(dependsOn: 'war', type:Exec){
+//    workingDir "/home/v/Programs/glassfish4/bin"
+//
+//    commandLine "./asadmin"
+//
+//    args "deploy", "--force=true", "${war.archivePath}"
+//}

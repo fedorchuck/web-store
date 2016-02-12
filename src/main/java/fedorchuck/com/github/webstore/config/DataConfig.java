@@ -1,10 +1,13 @@
 package fedorchuck.com.github.webstore.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import jdk.nashorn.internal.runtime.OptimisticReturnFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -21,6 +24,7 @@ import java.util.Map;
 @Configuration
 public class DataConfig {
 
+    private ResourceLoader resourceLoader;
     private String driverClassName;
     private String url;
     private String username;
@@ -29,7 +33,6 @@ public class DataConfig {
     private final static Logger logger = LoggerFactory.getLogger(DataConfig.class);
 
     public DataConfig() {
-        readConfig();
     }
 
     @Bean
@@ -55,6 +58,13 @@ public class DataConfig {
 
 
         return dataSource;
+    }
+
+    @Autowired
+    public void setResourceLoader(ResourceLoader resourceLoader)
+    {
+        this.resourceLoader = resourceLoader;
+        readConfig();
     }
 
     @Bean
@@ -100,10 +110,16 @@ public class DataConfig {
      */
     @SuppressWarnings("unchecked")
     private void readConfig() {
-        String configFile = "/home/v/Documents/projects/web-store/src/main/resources/jdbc.properties";
+        Resource res= resourceLoader.getResource("classpath:../jdbc.properties");
+        if(!res.exists()){
+            res= resourceLoader.getResource("classpath:jdbc.properties");
+            if(!res.exists()){
+                throw new IllegalStateException("Can't read configuratiuon for jdbc.properties");
+            }
+        }
         BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(configFile)));
+        try (InputStream is = res.getInputStream()){
+            br = new BufferedReader(new InputStreamReader(is));
             String line;
             String[] parts;
             Map config = new HashMap();
@@ -121,8 +137,8 @@ public class DataConfig {
             setValues(config);
 
         } catch (IOException |
-                IndexOutOfBoundsException |
                 IllegalAccessException |
+                IndexOutOfBoundsException |
                 NullPointerException e) {
             //TODO: log: "ERROR: unable to read file " + configFile.
         } finally {
@@ -161,7 +177,6 @@ public class DataConfig {
                     fields[i].set(null, data.get(fields[i].getName()));
                 }
             }
-
 
 /*            writer.println(" this.getClass().getDeclaredFields().length: " + this.getClass().getDeclaredFields().toString());
 
