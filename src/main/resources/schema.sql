@@ -1,7 +1,6 @@
 -- Table: users
 
 -- DROP TABLE users;
-
 CREATE TABLE users
 (
   id serial NOT NULL,
@@ -17,3 +16,22 @@ WITH (
 );
 ALTER TABLE users
   OWNER TO postgres;
+
+-- Table: users
+
+-- DROP TABLE users;
+CREATE TABLE goods
+(
+  id serial NOT NULL,
+  name text NOT NULL,
+  manufacturer text NOT NULL,
+  cost money NOT NULL,
+  characteristics text NOT NULL,
+  description text,
+  CONSTRAINT goods_pkey PRIMARY KEY (id)
+)
+WITH (
+OIDS=FALSE
+);
+ALTER TABLE goods
+OWNER TO postgres;
