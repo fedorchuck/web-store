@@ -5,13 +5,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by v on 12/02/16.
  */
 public class Commodity {
 
-    private int id;
+    private int id = ThreadLocalRandom.current().nextInt(1,2147483647);
 
     @NotNull
     @Size(min = 2, max = 60, message="{name.size}")
@@ -21,12 +22,13 @@ public class Commodity {
     @Size(min = 2, max = 60, message="{manufacturer.size}")
     private String manufacturer;
 
-    @NotNull
-    @Size(min = 0, max = (int) Double.MAX_VALUE, message="{cost.size}")
+    /*@NotBlank
+    //TODO: find or write correct input validation.
+    @Size(min = 0, max = 2147483647, message="{cost.size}")*/
     private Double cost;
 
     @NotNull
-    @Size(min = 0, max = 1200, message="{characteristics.size}")
+    @Size(min = 0, max = 120000, message="{characteristics.size}")
     private String characteristics;
 
     @Size(min = 0, max = 1200, message="{description.size}")
@@ -35,6 +37,7 @@ public class Commodity {
     public Commodity() { }
 
     public Commodity(String name, String manufacturer, Double cost, String characteristics, String description) {
+        this.id = ThreadLocalRandom.current().nextInt(1, 2147483647);
         this.name = name;
         this.manufacturer = manufacturer;
         this.cost = cost;

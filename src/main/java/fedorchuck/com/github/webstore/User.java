@@ -6,13 +6,17 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by v on 28/01/16.
  */
 public class User {
 
-    private int id;
+    private int id = ThreadLocalRandom.current().nextInt(1, 2147483647);
 
     @NotNull
     @Size(min=5, max=16, message="{username.size}")
@@ -37,7 +41,7 @@ public class User {
     public User() {}
 
     public User(String username, String password, String firstName, String lastName, String email) {
-        this.id = hashCode();
+        this.id = ThreadLocalRandom.current().nextInt(1, 2147483647);
         this.username = username;
         this.password = password;
         this.firstName = firstName;

@@ -29,7 +29,8 @@ public class JdbcCommodityRepository implements CommodityRepository {
     @Override
     public Commodity save(Commodity commodity) {
         jdbc.update(
-                "insert into goods (id, name, manufacturer, cost, characteristics, description) values (?,?,?,?,?,?) ",
+                "insert into goods (id, name, manufacturer, cost, characteristics, description) " +
+                        "values (?,?,?,cast(? as NUMERIC ),?,?) ",
                 commodity.getId(),
                 commodity.getName(),
                 commodity.getManufacturer(),
@@ -43,8 +44,8 @@ public class JdbcCommodityRepository implements CommodityRepository {
     @Override
     public List<Commodity> findByName(String name) {
         try {
-            return jdbc.query("select id, name, manufacturer, cost, characteristics, description from goods " +
-                            "where name=?",
+            return jdbc.query("select id, name, manufacturer, cast(cost as double precision), characteristics, " +
+                            "description from goods where name=?",
                     new CommodityRowMapper(),
                     name);
         } catch (EmptyResultDataAccessException ex) {

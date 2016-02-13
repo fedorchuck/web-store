@@ -17,15 +17,14 @@ WITH (
 ALTER TABLE users
   OWNER TO postgres;
 
--- Table: users
-
--- DROP TABLE users;
+-- Table: goods
+-- DROP TABLE goods;
 CREATE TABLE goods
 (
   id serial NOT NULL,
   name text NOT NULL,
   manufacturer text NOT NULL,
-  cost money NOT NULL,
+  cost numeric NOT NULL,
   characteristics text NOT NULL,
   description text,
   CONSTRAINT goods_pkey PRIMARY KEY (id)
