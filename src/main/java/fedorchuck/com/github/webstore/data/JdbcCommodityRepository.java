@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by v on 12/02/16.
@@ -28,10 +26,8 @@ public class JdbcCommodityRepository implements CommodityRepository {
 
     @Override
     public Commodity save(Commodity commodity) {
-        jdbc.update(
-                "insert into goods (id, name, manufacturer, cost, characteristics, description) " +
-                        "values (?,?,?,cast(? as NUMERIC ),?,?) ",
-                commodity.getId(),
+        jdbc.queryForList("insert into goods (name, manufacturer, cost, characteristics, description) " +
+                        "values (?,?,cast(? as NUMERIC ),?,?) RETURNING id",
                 commodity.getName(),
                 commodity.getManufacturer(),
                 commodity.getCost(),
@@ -77,6 +73,16 @@ public class JdbcCommodityRepository implements CommodityRepository {
         }
     }
 
+    @Override
+    public List<Commodity> all() {
+        try {
+            return jdbc.query("select * from goods", new CommodityRowMapper());
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
+    }
+
+
     private static class CommodityRowMapper implements RowMapper<Commodity> {
         public Commodity mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Commodity(
@@ -85,7 +91,8 @@ public class JdbcCommodityRepository implements CommodityRepository {
                     rs.getString("manufacturer"),
                     rs.getDouble("cost"),
                     rs.getString("characteristics"),
-                    rs.getString("description"));
+                    rs.getString("description")
+            );
         }
     }
 }

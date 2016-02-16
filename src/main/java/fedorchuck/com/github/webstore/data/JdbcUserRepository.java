@@ -24,16 +24,15 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     public User save(User user) {
-        jdbc.update(
-            "insert into users (id, username, password, email, firstname, lastname ) values (?, ?, ?, ?, ?, ?)",
-            user.getId(),
-            user.getUsername(),
-            user.getPassword(),
-            user.getEmail(),
-            user.getFirstName(),
-            user.getLastName()
-            );
-        return user; // TODO: Determine value for id
+        jdbc.queryForList("insert into users (username, password, email, firstname, lastname ) " +
+                        "values (?, ?, ?, ?, ?) RETURNING id",
+                user.getUsername(),
+                user.getPassword(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName()
+        );
+        return user;
     }
 
     public User findByUsername(String username) {
@@ -56,9 +55,9 @@ public class JdbcUserRepository implements UserRepository {
                     rs.getString("password"),
                     rs.getString("firstname"),
                     rs.getString("lastname"),
-                    rs.getString("email"));
+                    rs.getString("email")
+            );
         }
     }
-
 }
 

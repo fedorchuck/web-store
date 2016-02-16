@@ -13,4 +13,5 @@ public interface CommodityRepository {
     List<Commodity> findByName(String name);
     List<Commodity> findByCost(Double cost);
     List<Commodity> findByManufacturer(String manufacturer);
+    List<Commodity> all();
 }

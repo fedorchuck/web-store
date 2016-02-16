@@ -45,7 +45,8 @@
                 </div>
             </div>
         </div>
-        <a href="<c:url value="/goods/add" />">add goods</a>
+        <a href="<c:url value="/goods/add" />">add goods</a> <br/>
+        <a href="<c:url value="/goods/all" />">all goods</a>
     </div>
 </body>
 </html>

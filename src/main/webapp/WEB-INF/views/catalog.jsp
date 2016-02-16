@@ -27,22 +27,29 @@
 <c:out value="${commodity.characteristics}" /><br/>
 <c:out value="${commodity.description}" /><br/>--%>
 <h1>Goods</h1>
-<ul class="goodsList">
-    <c:forEach items="${goodsList}" var="commodity" >
-        <li id="commodity_<c:out value="commodity.id"/>">
-            <div class="name"><c:out value="${commodity.name}" /></div>
-            <span class="manufacturer"><c:out value="${commodity.manufacturer}" /></span>
-            <div>
-                <span class="characteristics"><c:out value="${commodity.characteristics}" /></span>
-                <span class="description"><c:out value="${commodity.description}" /></span>
-            </div>
-        </li>
-    </c:forEach>
-</ul>
-<c:if test="${fn:length(goodsList) gt 20}">
-    <hr />
-    <s:url value="/goods?count=${nextCount}" var="more_url" />
-    <a href="${more_url}">Show more</a>
+<%-- <ul class="goodsList">
+       <c:forEach items="${goodsList}" var="commodity" >
+            <li id="commodity_<c:out value="commodity.id"/>">
+                <div class="name"><c:out value="${commodity.name}" /></div>
+                <span class="manufacturer"><c:out value="${commodity.manufacturer}" /></span>
+                <div>
+                    <span class="characteristics"><c:out value="${commodity.characteristics}" /></span>
+                    <span class="description"><c:out value="${commodity.description}" /></span>
+                </div>
+         /li>
+        </c:forEach>
+    </ul>
+    <c:if test="${fn:length(goodsList) gt 20}">
+        <hr />
+        <s:url value="/goods?count=${nextCount}" var="more_url" />
+        <a href="${more_url}">Show more</a>
+    </c:if>--%>
+<c:if test="${not empty lists}">
+    <ul>
+        <c:forEach var="listValue" items="${lists}">
+            <li>${listValue}</li>
+        </c:forEach>
+    </ul>
 </c:if>
 </body>
 </html>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import fedorchuck.com.github.webstore.Commodity;
 import fedorchuck.com.github.webstore.data.CommodityRepository;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,9 +46,19 @@ public class GoodsController {
     }
 
     @RequestMapping(value="/{name}", method=GET)
-    public String showCommodity(@PathVariable String name, Model model) {
+    public ModelAndView showCommodity(@PathVariable String name, Model model) {
         List<Commodity> commodities = commodityRepository.findByName(name);
-        model.addAttribute(commodities);
+        //model.addAttribute(commodities);
+        ModelAndView model2 = new ModelAndView("catalog");
+        model2.addObject("lists", commodities);
+        //return "catalog";
+        return model2;
+    }
+
+    @RequestMapping(value = "all", method = GET)
+    public String showAll(Model model) {
+        List<Commodity> commodities = commodityRepository.all();
+        model.addAttribute("lists", commodities);
         return "catalog";
     }
 }
