@@ -15,6 +15,7 @@ dependencies {
 
     compile 'org.slf4j:slf4j-api:1.5.6'
 
+    compile "org.thymeleaf:thymeleaf-spring3:$thymeleafVersion"
     compile "javax.servlet:jstl:$jstlVersion"
     providedCompile "javax.servlet:javax.servlet-api:$servletApiVersion"
     providedCompile "javax.servlet.jsp:jsp-api:$jspApiVersion"

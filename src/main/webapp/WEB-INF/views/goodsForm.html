@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>web store</title>
+  <link rel="stylesheet"
+        type="text/css"
+        th:href="@{/resources/css/style.css}" />
+  <link rel="stylesheet"
+        type="text/css"
+        th:href="@{/resources/css/bootstrap.css}" />
+</head>
+<body>
+<div id="header" th:include="page :: header"></div>
+<div id="content" class="col-md-12 text-center">
+    <h1>add commodity</h1>
+    <form method="POST" th:object="${commodity}" enctype="multipart/form-data">
+        <div class="errors" th:if="${#fields.hasErrors('*')}">
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}"
+                    th:text="${err}">Input is incorrect</li>
+            </ul>
+        </div>
+
+        <ul>
+            <li>
+                <label th:class="${#fields.hasErrors('name')}? 'error'">name of goods</label>:
+                <input type="text" th:field="*{name}"
+                       th:class="${#fields.hasErrors('name')}? 'error'" />
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <label th:class="${#fields.hasErrors('manufacturer')}? 'error'">manufacturer</label>:
+                <input type="text" th:field="*{manufacturer}"
+                       th:class="${#fields.hasErrors('manufacturer')}? 'error'" />
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <label th:class="${#fields.hasErrors('cost')}? 'error'">cost</label>:
+                <input type="text" th:field="*{cost}"
+                       th:class="${#fields.hasErrors('cost')}? 'error'" />
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <label th:class="${#fields.hasErrors('characteristics')}? 'error'">characteristics</label>:
+                <input type="text" th:field="*{characteristics}"
+                       th:class="${#fields.hasErrors('characteristics')}? 'error'" />
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <label th:class="${#fields.hasErrors('description')}? 'error'">description</label>:
+                <input type="text" th:field="*{description}"
+                       th:class="${#fields.hasErrors('description')}? 'error'" />
+            </li>
+        </ul>
+        <input type="submit" value="add" />
+    </form>
+</div>
+<div id="footer" th:include="page :: copy"></div>
+</body>
+</html>

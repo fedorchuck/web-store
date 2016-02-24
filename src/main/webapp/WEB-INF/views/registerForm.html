@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>web store</title>
+  <link rel="stylesheet" type="text/css"
+        th:href="@{/resources/css/style.css}" />
+  <link rel="stylesheet"
+        type="text/css"
+        th:href="@{/resources/css/bootstrap.css}" />
+</head>
+<body>
+<div id="header" th:include="page :: header"></div>
+<div id="content" class="col-md-12 text-center">
+  <h1>Register</h1>
+  <form method="POST" th:object="${user}" enctype="multipart/form-data">
+      <div class="errors" th:if="${#fields.hasErrors('*')}">
+          <ul>
+              <li th:each="err : ${#fields.errors('*')}"
+                  th:text="${err}">Input is incorrect</li>
+          </ul>
+      </div>
+      <ul>
+          <li>
+              <label th:class="${#fields.hasErrors('firstName')}?'error'">First Name</label>:
+              <input type="text" th:field="*{firstName}" th:value="*{firstName}"
+                      th:class="${#fields.hasErrors('firstName')}?'error'"/>
+          </li>
+      </ul>
+      <ul>
+          <li>
+              <label th:class="${#fields.hasErrors('lastName')}?'error'">Last Name</label>:
+              <input type="text" th:field="*{lastName}" th:class="${#fields.hasErrors('lastName')}?'error'" />
+          </li>
+      </ul>
+      <ul>
+          <li>
+              <label th:class="${#fields.hasErrors('email')}?'error'">Email</label>:
+              <input type="text" th:field="*{email}"
+                     th:class="${#fields.hasErrors('email')}?'error'" />
+          </li>
+      </ul>
+      <ul>
+          <li>
+              <label th:class="${#fields.hasErrors('username')}? 'error'">Username</label>:
+              <input type="text" th:field="*{username}"
+                     th:class="${#fields.hasErrors('username')}? 'error'" />
+          </li>
+      </ul>
+      <ul>
+          <li>
+              <label th:class="${#fields.hasErrors('password')}? 'error'">Password</label>:
+              <input type="text" th:field="*{password}"
+                     th:class="${#fields.hasErrors('password')}? 'error'" />
+          </li>
+      </ul>
+      <input type="submit" value="Register" />
+  </form>
+</div>
+<div id="footer" th:include="page :: copy"></div>
+</body>
+</html>
