@@ -12,7 +12,7 @@
 <div id="header" th:include="page :: header"></div>
 <div id="content" class="col-md-12 text-center">
   <h1>Register</h1>
-  <form method="POST" th:object="${user}" enctype="multipart/form-data">
+  <form method="POST" th:object="${user}" >
       <div class="errors" th:if="${#fields.hasErrors('*')}">
           <ul>
               <li th:each="err : ${#fields.errors('*')}"
