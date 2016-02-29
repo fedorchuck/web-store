@@ -8,4 +8,5 @@ import fedorchuck.com.github.webstore.User;
 public interface UserRepository {
     User save(User user);
     User findByUsername(String username);
+    Boolean deleteByUsername(String username);
 }

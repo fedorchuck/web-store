@@ -47,6 +47,18 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
+    public Boolean deleteByUsername(String username) {
+        try {
+            jdbc.update(
+                    "DELETE from users where username=?",
+                    username);
+            return true;
+        }
+        catch (EmptyResultDataAccessException e){
+            return false;
+        }
+    }
+
     private static class UserRowMapper implements RowMapper<User> {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new User(

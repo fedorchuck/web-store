@@ -1,56 +1,82 @@
 package fedorchuck.com.github.webstore.data;
 
 import fedorchuck.com.github.webstore.User;
-import fedorchuck.com.github.webstore.config.DataConfig;
-import junit.framework.Assert;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import javax.sql.DataSource;
-import javax.validation.constraints.AssertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
- * Created by v on 11/02/16.
+ * Created by v on 26/02/16.
  */
 public class JdbcUserRepositoryTest {
 
-    @Test
+    private JdbcUserRepository jdbc;
+
     @Before
-    public void testZero() {
+    public void setUp() {
         try {
-            User user = new User();
-            DataConfig dataConfig = new DataConfig();
-
-            //TODO: learn how works spring resource loader and write tests
-
-            AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-            context.register(DataConfig.class);
-
-            dataConfig.setResourceLoader(context);
-            DataSource dataSource = dataConfig.dataSource();
-            JdbcOperations jdbcOperations = dataConfig.jdbcTemplate(dataSource);
-            JdbcUserRepository jdbc = new JdbcUserRepository(jdbcOperations);
-            Assert.assertTrue(true);
+            //TODO: should be rewritten.
+        String driverClassName = "org.postgresql.Driver";
+        String url = "jdbc:postgresql://localhost:5432/webstore";
+        String username = "postgres";
+        String password = "lucky strike";
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        jdbc = new JdbcUserRepository(new JdbcTemplate(dataSource));
+            //TODO: run creating scripts.
+        Assert.assertTrue(true);
         } catch (Throwable throwable) {
             Assert.assertTrue(throwable.getMessage(), false);
         }
     }
 
+    @Test
+    public void testSave() {
+        try {
+            User user = new User("mynameis",
+                    "itismysecondname",
+                    "myemail@mail.com",
+                    "myusername",
+                    "mypassworDis");
+
+            assertEquals("User{id=0, username='mynameis', password='itismysecondname', " +
+                    "firstName='myemail@mail.com', lastName='myusername', email='mypassworDis'}", jdbc.save(user).toString());
+
+            //Assert.assertTrue(true);
+        } catch (Throwable throwable) {
+            Assert.assertTrue(throwable.getMessage(), false);
+        }
+    }
 
     @Test
-    public void testFindByUsername() throws Exception {
-        Assert.assertTrue(false);
-       /* User user = new User();
-        DataSource dataSource = new DataConfig().dataSource();
-        JdbcOperations jdbcOperations = new DataConfig().jdbcTemplate(dataSource);
-        JdbcUserRepository jdbc = new JdbcUserRepository(jdbcOperations);
+    public void testFindByUsername()  {
+        try {
+            User user = jdbc.findByUsername("mynameis");
+            assertEquals("mynameis", user.getUsername());
+        } catch (Throwable throwable) {
+            Assert.assertTrue(throwable.getMessage(), false);
+        }
+    }
 
-        user = jdbc.findByUsername("myusername");*/
+    @Test
+    public void ztestDeleteBtUsername(){
+        try {
+            assertEquals(true, jdbc.deleteByUsername("mynameis"));
+        } catch (Throwable throwable) {
+            Assert.assertTrue(throwable.getMessage(), false);
+        }
+    }
 
-        /*select id, username, password, firstname, lastname, email from users
-        where username='myusername';*/
+    @After
+    public void tearDown() {
+
     }
 }
