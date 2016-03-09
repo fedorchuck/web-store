@@ -8,10 +8,13 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import java.util.List;
+import java.util.UUID;
+
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by v on 26/02/16.
+ * @author fedorchuck
  */
 public class JdbcUserRepositoryTest {
 
@@ -21,62 +24,109 @@ public class JdbcUserRepositoryTest {
     public void setUp() {
         try {
             //TODO: should be rewritten.
-        String driverClassName = "org.postgresql.Driver";
-        String url = "jdbc:postgresql://localhost:5432/webstore";
-        String username = "postgres";
-        String password = "lucky strike";
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driverClassName);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-        jdbc = new JdbcUserRepository(new JdbcTemplate(dataSource));
-            //TODO: run creating scripts.
-        Assert.assertTrue(true);
+
+            DriverManagerDataSource dataSource = new DriverManagerDataSource();
+            dataSource.setDriverClassName(Config.DRIVERCLASSNAME);
+            dataSource.setUrl(Config.URL);
+            dataSource.setUsername(Config.USERNAME);
+            dataSource.setPassword(Config.PASSWORD);
+            jdbc = new JdbcUserRepository(new JdbcTemplate(dataSource));
+                //TODO: run creating scripts.
+            Assert.assertTrue(true);
         } catch (Throwable throwable) {
-            Assert.assertTrue(throwable.getMessage(), false);
+            Assert.fail(throwable.getMessage());
         }
     }
 
-    @Test
-    public void testSave() {
+    @Test       //Save
+    public void test1() {
         try {
-            User user = new User("mynameis",
-                    "itismysecondname",
-                    "myemail@mail.com",
-                    "myusername",
-                    "mypassworDis");
+            User user = getNewUser();
 
-            assertEquals("User{id=0, username='mynameis', password='itismysecondname', " +
-                    "firstName='myemail@mail.com', lastName='myusername', email='mypassworDis'}", jdbc.save(user).toString());
+            assertEquals(user.toString(), jdbc.save(user).toString());
 
             //Assert.assertTrue(true);
         } catch (Throwable throwable) {
-            Assert.assertTrue(throwable.getMessage(), false);
+            Assert.fail(throwable.getMessage());
         }
     }
 
-    @Test
-    public void testFindByUsername()  {
+    @Test       //FindByUsername
+    public void test2()  {
         try {
-            User user = jdbc.findByUsername("mynameis");
-            assertEquals("mynameis", user.getUsername());
+            User testUser = getNewUser();
+            User user = jdbc.findByUsername(testUser.getUsername());
+            assertEquals(testUser.getUsername(), user.getUsername());
         } catch (Throwable throwable) {
-            Assert.assertTrue(throwable.getMessage(), false);
+            Assert.fail(throwable.getMessage());
         }
     }
 
-    @Test
-    public void ztestDeleteBtUsername(){
+    @Test       //findByUser_id
+    public void test3() {
         try {
-            assertEquals(true, jdbc.deleteByUsername("mynameis"));
+            User testUser = getNewUser();
+            User user = jdbc.findByUser_id(testUser.getUser_id());
+            assertEquals(testUser, user);
         } catch (Throwable throwable) {
-            Assert.assertTrue(throwable.getMessage(), false);
+            Assert.fail(throwable.getMessage());
+        }
+    }
+
+    @Test       //findByUserRole
+    public void test4() {
+        try {
+            User testUser = getNewUser();
+            List<User> userList = jdbc.findByUserRole(testUser.getRole());
+            boolean result = false;
+            for (User user : userList) {
+                if (testUser.equals(user)) {
+                    result = true;
+                    break;
+                }
+            }
+            Assert.assertTrue(result);
+        } catch (Throwable throwable) {
+            Assert.fail(throwable.getMessage());
+        }
+    }
+
+    @Test       //deleteByUser_id
+    public void test5(){
+        try {
+            User testUser = getNewUser();
+            assertEquals(true, jdbc.deleteByUser_id(testUser.getUser_id()));
+        } catch (Throwable throwable) {
+            Assert.fail(throwable.getMessage());
+        }
+    }
+
+    @Test       //DeleteByUsername
+    public void test6(){
+        try {
+            test1();
+
+            User testUser = getNewUser();
+            assertEquals(true, jdbc.deleteByUsername(testUser.getUsername()));
+        } catch (Throwable throwable) {
+            Assert.fail(throwable.getMessage());
         }
     }
 
     @After
     public void tearDown() {
 
+    }
+
+    private User getNewUser(){
+        return new User(
+                "testUserName",
+                "testPassword",
+                "testUserFirstName",
+                "testUserLastName",
+                "testUser@email",
+                0,
+                UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d")
+        );
     }
 }
