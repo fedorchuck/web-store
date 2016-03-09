@@ -1,6 +1,7 @@
 package fedorchuck.com.github.webstore.data;
 
 import fedorchuck.com.github.webstore.Commodity;
+import fedorchuck.com.github.webstore.Config;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

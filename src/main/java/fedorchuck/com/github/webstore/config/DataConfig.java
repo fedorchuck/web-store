@@ -35,8 +35,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 import java.io.*;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
 @Configuration
 public class DataConfig {
@@ -117,45 +116,28 @@ public class DataConfig {
                 throw new IllegalStateException(massageError);
             }
         }
-        BufferedReader br = null;
-        try (InputStream is = res.getInputStream()){
-            br = new BufferedReader(new InputStreamReader(is));
-            String line;
+        Properties property = new Properties();
+        try (InputStream is = res.getInputStream()) {
+            property.load(is);
+            Field[] fields = this.getClass().getSuperclass().getDeclaredFields();
+            String canonicalField;
             String[] parts;
-            Map config = new HashMap();
 
-            while ((line = br.readLine()) != null) {
-                if (line.isEmpty()) break;
+            for (Field field : fields) {
 
-                parts = line.split("=");
+                parts = field.getName().split("DataConfig.");
+                canonicalField = parts[0];
 
-                parts[0] = parts[0].replace("jdbc.","");
-                parts[1] = parts[1].replace("\\","");
-
-                config.put(parts[0], parts[1]);
+                if (property.containsKey("jdbc."+canonicalField)) {
+                    field.setAccessible(true);
+                    field.set(this, property.get("jdbc."+canonicalField));
+                }
             }
-
-            setFieldsValues(config);
 
         } catch (IOException |
                 IllegalAccessException |
                 NullPointerException e) {
             logger.error("problem read config. reason: ", e);
-        } finally {
-            try {
-                br.close();
-            } catch (IOException ignore) { }
-        }
-    }
-
-    private void setFieldsValues(Map data) throws IllegalAccessException {
-        Field[] fields = this.getClass().getSuperclass().getDeclaredFields();
-
-        for (Field field : fields) {
-            if (data.containsKey(field.getName())) {
-                field.setAccessible(true);
-                field.set(this, data.get(field.getName()));
-            }
         }
     }
 }
