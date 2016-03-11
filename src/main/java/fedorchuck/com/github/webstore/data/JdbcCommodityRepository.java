@@ -21,6 +21,7 @@
 
 package fedorchuck.com.github.webstore.data;
 
+import fedorchuck.com.github.webstore.Category;
 import fedorchuck.com.github.webstore.Commodity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -162,6 +163,19 @@ public class JdbcCommodityRepository implements CommodityRepository {
     }
 
     @Override
+    public List<Category> findByCategory() {
+        try {
+            return jdbc.query(
+                    "SELECT DISTINCT category FROM goods;",
+                    new CategoryRowMapper()
+            );
+        } catch (EmptyResultDataAccessException ex){
+            return null;
+        }
+
+    }
+
+    @Override
     public List<Commodity> findByAddedBy(UUID addedBy) {
         try {
             return jdbc.query(
@@ -211,6 +225,14 @@ public class JdbcCommodityRepository implements CommodityRepository {
                     rs.getString("description"),
                     rs.getString("category"),
                     UUID.fromString(rs.getString("addedBy"))
+            );
+        }
+    }
+
+    private static class CategoryRowMapper implements RowMapper<Category> {
+        public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Category(
+                    rs.getString("category")
             );
         }
     }

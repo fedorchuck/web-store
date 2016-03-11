@@ -19,26 +19,24 @@
  * @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-package fedorchuck.com.github.webstore.data;
+package fedorchuck.com.github.webstore;
 
-import fedorchuck.com.github.webstore.Category;
-import fedorchuck.com.github.webstore.Commodity;
+@Deprecated
+public class SearchRequest {
+    private String name;
 
-import java.util.List;
-import java.util.UUID;
+    public String getName() {
+        return name;
+    }
 
-public interface CommodityRepository {
-    Commodity save(Commodity commodity);
-    Commodity findByCommodity_id(UUID commodity_id);
-    List<Commodity> findByName(String name);
-    List<Commodity> findByManufacturer(String manufacturer);
-    List<Commodity> findByCost(Double cost);
-    List<Commodity> findByQuantity(Integer quantity);
-    List<Commodity> findBySell_out(Boolean sell_out);
-    List<Commodity> findByCategory(String category);
-    List<Category> findByCategory();
-    List<Commodity> findByAddedBy(UUID addedBy);
-    List<Commodity> all();
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    Boolean deleteByCommodity_id(UUID commodity_id);
+    @Override
+    public String toString() {
+        return "SearchRequest{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

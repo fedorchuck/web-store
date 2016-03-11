@@ -1,5 +1,6 @@
 package fedorchuck.com.github.webstore.data;
 
+import fedorchuck.com.github.webstore.Category;
 import fedorchuck.com.github.webstore.Commodity;
 import fedorchuck.com.github.webstore.Config;
 import org.junit.Assert;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -183,8 +185,27 @@ public class JdbcCommodityRepositoryTest {
         }
     }
 
-    @Test       //deleteByCommodity_id
+    @Test       //findByCategory
     public void test09() {
+        try {
+            test00();
+            Commodity testCommodity = getNewCommodity();
+            List<Category> categories = jdbc.findByCategory();
+            boolean result = false;
+            for (Category category : categories) {
+                if (Objects.equals(testCommodity.getCategory(), category.getName())) {
+                    result = true;
+                    break;
+                }
+            }
+            Assert.assertTrue(result);
+        } catch (Throwable throwable){
+            Assert.fail(throwable.getMessage());
+        }
+    }
+
+    @Test       //deleteByCommodity_id
+    public void test10() {
         try {
             //test1();
             Commodity testCommodity = getNewCommodity();

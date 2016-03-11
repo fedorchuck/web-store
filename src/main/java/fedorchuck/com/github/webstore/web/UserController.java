@@ -26,6 +26,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 import javax.validation.Valid;
 
 import fedorchuck.com.github.webstore.AuthorizeUser;
+import fedorchuck.com.github.webstore.Commodity;
+import fedorchuck.com.github.webstore.SearchRequest;
+import fedorchuck.com.github.webstore.data.CommodityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,52 +38,82 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import fedorchuck.com.github.webstore.User;
 import fedorchuck.com.github.webstore.data.UserRepository;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
     private UserRepository userRepository;
+    private CommodityRepository commodityRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, CommodityRepository commodityRepository) {
         this.userRepository = userRepository;
+        this.commodityRepository = commodityRepository;
     }
 
     @RequestMapping(value="register", method=GET)
     public String showRegistrationForm(Model model) {
         model.addAttribute(new User());
+        model.addAttribute("searchRequest", new SearchRequest());
+
         return "registerForm";
     }
 
     @RequestMapping(value = "authorize", method = GET)
     public String showAuthorizationForm(Model model) {
         model.addAttribute(new AuthorizeUser());
+        model.addAttribute("searchRequest", new SearchRequest());
         return "authorizeForm";
     }
 
     @RequestMapping(value="register", method=POST)
-    public String processRegistration(
+    public /*String*/ModelAndView processRegistration(
             @Valid User user,
             Errors errors) {
         if (errors.hasErrors()) {
-            return "registerForm";
+            ModelAndView model = new ModelAndView("registerForm");
+            model.addObject("searchRequest", new SearchRequest());
+            return model;//return "registerForm";
         }
         userRepository.save(user);
-        return "redirect:/user/" + user.getUsername();
+        ModelAndView model = new ModelAndView("redirect:/user/" + user.getUsername());
+        model.addObject("searchRequest", new SearchRequest());
+        return model;//return "redirect:/user/" + user.getUsername();
+    }
+
+    @RequestMapping(value="searchRequest", method=POST)
+    public String processFindCommodity(SearchRequest commodity, Model model) {
+        //TODO: add validation
+        List<Commodity> commodities = commodityRepository.findByName(commodity.getName());
+        model.addAttribute("lists", commodities);
+        return "catalog";
     }
 
     @RequestMapping(value="authorize", method=POST)
-    public String processAuthorization(
+    public /*String*/ModelAndView processAuthorization(
             @Valid AuthorizeUser authorizeUser,
             Errors errors) {
+        boolean valid = false;
         if (errors.hasErrors()) {
-            return "authorizeForm";
+            valid = false;
         }
-        if (authorizeUser.check(userRepository)) return "redirect:/user/" + authorizeUser.getUser(userRepository).getUsername();
-        else {
-            errors.reject("username or password is incorrect");
-            return "authorizeForm";
+        if (authorizeUser.check(userRepository)) {
+            valid = true;
+        }
+        if (valid) {
+            //return "redirect:/user/" + authorizeUser.getUser(userRepository).getUsername();
+            ModelAndView model = new ModelAndView("redirect:/user/" + authorizeUser.getUser(userRepository).getUsername());
+            model.addObject("searchRequest", new SearchRequest());
+            return model;//return "authorizeForm";
+        } else {
+            //errors.reject("username or password is incorrect");
+            ModelAndView model = new ModelAndView("authorizeForm");
+            model.addObject("searchRequest", new SearchRequest());
+            return model;//return "authorizeForm";
         }
     }
 
@@ -88,6 +121,7 @@ public class UserController {
     public String showUserProfile(@PathVariable String username, Model model) {
         User user = userRepository.findByUsername(username);
         model.addAttribute(user);
+        model.addAttribute("searchRequest", new SearchRequest());
         return "profile";
     }
 

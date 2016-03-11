@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div th:fragment="categories">
+    <h1>Goods catalog</h1>
+    <h3 th:each="category : ${categories}">
+        <p class="text-center">
+            <a th:href="@{/goods/byCategory}" class="name" th:text="${category.name}"> *name* </a>
+        </p> <hr />
+    </h3>
+</div>
+</body>
+
+</html>

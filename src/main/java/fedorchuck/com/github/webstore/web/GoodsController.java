@@ -23,6 +23,7 @@ package fedorchuck.com.github.webstore.web;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
+import fedorchuck.com.github.webstore.SearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,16 +52,26 @@ public class GoodsController {
     @RequestMapping(value = "add", method = GET)
     public String showGoodsForm(Model model){
         model.addAttribute(new Commodity());
+        model.addAttribute("searchRequest", new SearchRequest());
         return "goodsForm";
     }
 
     @RequestMapping(value = "add", method = POST)
-    public String processAddCommodities(
+    public /*String*/ ModelAndView processAddCommodities(
             @Valid Commodity commodity,
             Errors errors) {
-        if (errors.hasErrors()) return "goodsForm";
+        if (errors.hasErrors()) {
+            ModelAndView model = new ModelAndView("goodsForm");
+            model.addObject("searchRequest", new SearchRequest());
+            return model;//"goodsForm";
+        }
         commodityRepository.save(commodity);
-        return "redirect:/goods/" + commodity.getName();
+        ModelAndView model = new ModelAndView("redirect:/goods/" + commodity.getName());
+        model.addObject(new Commodity());
+        model.addObject("searchRequest", new SearchRequest());
+
+        //return "redirect:/goods/" + commodity.getName();
+        return model;
     }
 
     @RequestMapping(value="/{name}", method=GET)
@@ -76,6 +87,15 @@ public class GoodsController {
     @RequestMapping(value = "all", method = GET)
     public String showAll(Model model) {
         List<Commodity> commodities = commodityRepository.all();
+        model.addAttribute("lists", commodities);
+        model.addAttribute("searchRequest", new SearchRequest());
+        return "catalog";
+    }
+
+    @RequestMapping(value="searchRequest", method=POST)
+    public String processFindCommodity(SearchRequest commodity, Model model) {
+        //TODO: add validation
+        List<Commodity> commodities = commodityRepository.findByName(commodity.getName());
         model.addAttribute("lists", commodities);
         return "catalog";
     }

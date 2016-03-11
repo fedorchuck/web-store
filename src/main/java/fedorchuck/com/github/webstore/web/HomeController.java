@@ -21,19 +21,46 @@
 
 package fedorchuck.com.github.webstore.web;
 
+import fedorchuck.com.github.webstore.Category;
+import fedorchuck.com.github.webstore.Commodity;
+import fedorchuck.com.github.webstore.SearchRequest;
+import fedorchuck.com.github.webstore.data.CommodityRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
 
+    private CommodityRepository commodityRepository;
+
+    @Autowired
+    public HomeController(CommodityRepository commodityRepository) {
+        this.commodityRepository = commodityRepository;
+    }
+
     @RequestMapping(method = GET)
     public String home(Model model) {
+        model.addAttribute(new Commodity());
+        model.addAttribute("searchRequest", new SearchRequest());
+
+        List<Category> categories = commodityRepository.findByCategory();
+        model.addAttribute("categories", categories);
+
         return "index";
     }
 
+    @RequestMapping(value="searchRequest", method = POST)
+    public String processSearchRequest(SearchRequest searchRequest, Model model) {
+        //TODO: add validation
+        List<Commodity> response = commodityRepository.findByName(searchRequest.getName());
+        model.addAttribute("lists", response);
+        return "catalog";
+    }
 }
