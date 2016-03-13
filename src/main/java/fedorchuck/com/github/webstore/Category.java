@@ -21,8 +21,11 @@
 
 package fedorchuck.com.github.webstore;
 
+@Deprecated
 public class Category {
     private String name;
+
+    public Category() {}
 
     public Category(String category) {
         this.name = category;

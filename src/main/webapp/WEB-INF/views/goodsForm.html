@@ -56,6 +56,40 @@
                        th:class="${#fields.hasErrors('description')}? 'error'" />
             </li>
         </ul>
+        <ul>
+            <li>
+                <label th:class="${#fields.hasErrors('category')}? 'error'">category</label>:
+                <input type="text" th:field="*{category}"
+                       th:class="${#fields.hasErrors('category')}? 'error'" />
+            </li>
+        </ul>
+        <!--<ul>
+            <li>
+                <label th:class="${#fields.hasErrors('sell_out')}? 'error'">sell_out (true/false)</label>:
+                <input type="text" th:field="*{sell_out}"
+                       th:class="${#fields.hasErrors('sell_out')}? 'error'" />
+            </li>
+        </ul>-->
+        <div class="radio" th:each="item : ${radioItems}">
+            <label>
+                <input type="radio" name="sell_out" th:value="${item.value}"
+                       th:text="${item.key}" th:field="*{sell_out}">radio</input>
+            </label>
+        </div>
+        <ul>
+            <li>
+                <label th:class="${#fields.hasErrors('quantity')}? 'error'">quantity of commodity</label>:
+                <input type="text" th:field="*{quantity}"
+                       th:class="${#fields.hasErrors('quantity')}? 'error'" />
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <label th:class="${#fields.hasErrors('addedBy')}? 'error'">it's temporary field added by</label>:
+                <input type="text" th:field="*{addedBy}"
+                       th:class="${#fields.hasErrors('addedBy')}? 'error'" />
+            </li>
+        </ul>
         <input type="submit" value="add" />
     </form>
 </div>

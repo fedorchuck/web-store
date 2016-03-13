@@ -63,12 +63,7 @@ public class Commodity {
     private UUID addedBy;
 
     public Commodity() {
-        //TODO: temporary design
         this.commodity_id = UUID.randomUUID();
-        this.quantity = 5;
-        this.sell_out = false;
-        this.category = "tmp";
-        this.addedBy = UUID.randomUUID();
     }
 
     public Commodity(

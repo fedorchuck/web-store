@@ -11,48 +11,15 @@
 </head>
 <body>
 <div id="header" th:include="page :: header"></div>
-    <div class="left-bar col-md-3">
-        <div id="categories" th:include="leftPanel::categories">
-
-        </div>
-    </div>
-    <div class="container">
-
-        <!--<div class="row">
-            <div class="col-md-2 text-right text-uppercase">
-                <div class="col-lg-6">
-                    <a th:href="@{/}"><h4>web store</h4></a>
-                </div>
-                <div class="col-lg-6">
-                    <a th:href="@{/catalog}"><h4>catalog</h4></a>
-                </div>
-            </div>
-            <div class="col-md-8 text-center">
-                <form method="POST" th:object="${commodity}" >
-                    <label>search:
-                        <input type="text" th:field="*{name}"/>
-                    </label>
-                    <input type="submit" value="find" />
-                </form>
-            </div>
-            <div class="col-md-2">
-                <div class="col-md-12 text-lowercase text-center">
-                    <div class="col-md-6">
-                        <a th:href="@{/user/authorize}">authorize</a>
-                    </div>
-                    <div class="col-md-6">
-                        <a th:href="@{/user/register}">register</a>
-                    </div>
-                </div>
-            </div>
-        </div>-->
-
-        <div class="main-area col-md-9 text-center">
-            <a th:href="@{/goods/add}">add goods</a> <br/>
-            <a th:href="@{/goods/all}">all goods</a>
-        </div>
+    <div class="left-bar col-md-2" id="categories" th:include="leftPanel::categories">
 
     </div>
-<div id="footer" class="text-center" th:include="page :: copy"></div>
+    <div class="container col-md-10 text-center">
+        <a th:href="@{/goods/add}">add goods</a> <br/>
+
+    </div>
+<footer>
+<div id="" class="footer text-center" th:include="page :: copy"></div>
+    </footer>
 </body>
 </html>

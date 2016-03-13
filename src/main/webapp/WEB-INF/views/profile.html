@@ -2,7 +2,11 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>web store</title>
-  <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}" />
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}" />
+    <link rel="stylesheet"
+          type="text/css"
+          th:href="@{/resources/css/bootstrap.css}" />
 </head>
 <body>
   <div id="header" th:include="page :: header"></div>
@@ -12,6 +16,7 @@
       <span th:text="${user.username}">username</span><br/>
       <span th:text="${user.firstName}">first</span> <span th:text="${user.lastName}">last</span><br/>
       <span th:text="${user.email}">email</span>
+      <span th:text="${user.user_id}">user_id</span>
   </div>
   <div id="footer" class="text-center" th:include="page :: copy"></div>
 </body>

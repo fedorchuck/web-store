@@ -57,7 +57,9 @@ public class User {
 
     private Integer role;//0-admin; 1-customer; 2-logged users; 3-default user//default -> admin.
 
-    public User() {}
+    public User() {
+        this.user_id = UUID.randomUUID();
+    }
 
     public User(
             String username, String password, String firstName, String lastName,

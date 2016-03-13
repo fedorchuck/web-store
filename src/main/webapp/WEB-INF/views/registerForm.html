@@ -53,6 +53,23 @@
                      th:class="${#fields.hasErrors('password')}? 'error'" />
           </li>
       </ul>
+      <!--<ul>
+          <li>
+              <label th:class="${#fields.hasErrors('role')}? 'error'">
+                  Role(0-admin; 1-customer; 2-logged users; 3-default user)</label>:
+              <input type="text" th:field="*{role}"
+                     th:class="${#fields.hasErrors('role')}? 'error'" />
+          </li>
+      </ul>-->
+      <!--<form method="POST" th:object="${searchRequest}" >th:action="@{/role}" id="role" role="form" -->
+          <!--<input type="hidden" th:field="*{id}"/>-->
+
+      <div class="radio" th:each="item : ${radioItems}">
+          <label>
+              <input type="radio" name="role" th:value="${item.value}" th:text="${item.key}" th:field="*{role}">radio</input>
+          </label>
+      </div>
+
       <input type="submit" value="Register" />
   </form>
 </div>

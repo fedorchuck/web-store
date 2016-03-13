@@ -40,7 +40,10 @@ import fedorchuck.com.github.webstore.User;
 import fedorchuck.com.github.webstore.data.UserRepository;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -59,6 +62,7 @@ public class UserController {
     public String showRegistrationForm(Model model) {
         model.addAttribute(new User());
         model.addAttribute("searchRequest", new SearchRequest());
+        model.addAttribute("radioItems", RADIO_ITEMS);
 
         return "registerForm";
     }
@@ -67,6 +71,8 @@ public class UserController {
     public String showAuthorizationForm(Model model) {
         model.addAttribute(new AuthorizeUser());
         model.addAttribute("searchRequest", new SearchRequest());
+        //model.addAttribute("radioItems", RADIO_ITEMS);
+
         return "authorizeForm";
     }
 
@@ -77,6 +83,7 @@ public class UserController {
         if (errors.hasErrors()) {
             ModelAndView model = new ModelAndView("registerForm");
             model.addObject("searchRequest", new SearchRequest());
+            model.addObject("radioItems", RADIO_ITEMS);
             return model;//return "registerForm";
         }
         userRepository.save(user);
@@ -124,5 +131,14 @@ public class UserController {
         model.addAttribute("searchRequest", new SearchRequest());
         return "profile";
     }
+
+    final static Map<String, Integer> RADIO_ITEMS = Collections.unmodifiableMap(
+            new LinkedHashMap<String, Integer>() {
+                {
+                    put("Admin", 0);
+                    put("Customer", 1);
+                    put("Seller", 2);
+                }
+            });
 
 }

@@ -2,32 +2,23 @@ body {
     font-family: sans-serif;
 }
 
-.spittleList h1 {
-    font-size: 16pt;
+.row {
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
-.spittleList ul {
-    list-style: none;
-    margin-left: 0px;
-    padding-left: 0px;
+.search-panel, .user-control {
+    margin-top: 2%;
+    margin-bottom: -2%;
+
 }
 
-.spittleList ul li:first-child {
-    border-top: 0px;
+.left-bar {
+    margin-top: -2%;
+    margin-bottom: -1%;
 }
 
-.spittleList ul li {
-    border-top: 1px solid #cccccc;
-}
-
-.spittleTime {
-    font-size: 8pt;
-}
-
-.spittleLocation {
-    font-size: 8pt;
-}
-
-.spittleForm h1 {
-    font-size: 16pt;
+.footer {
+    margin-top: 50%;
+    height: 4em;
 }

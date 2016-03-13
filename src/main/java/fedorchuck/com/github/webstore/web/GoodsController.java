@@ -23,6 +23,7 @@ package fedorchuck.com.github.webstore.web;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
+import fedorchuck.com.github.webstore.Category;
 import fedorchuck.com.github.webstore.SearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,10 @@ import fedorchuck.com.github.webstore.data.CommodityRepository;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/goods")
@@ -53,6 +57,7 @@ public class GoodsController {
     public String showGoodsForm(Model model){
         model.addAttribute(new Commodity());
         model.addAttribute("searchRequest", new SearchRequest());
+        model.addAttribute("radioItems", RADIO_ITEMS);
         return "goodsForm";
     }
 
@@ -63,6 +68,7 @@ public class GoodsController {
         if (errors.hasErrors()) {
             ModelAndView model = new ModelAndView("goodsForm");
             model.addObject("searchRequest", new SearchRequest());
+            model.addObject("radioItems", RADIO_ITEMS);
             return model;//"goodsForm";
         }
         commodityRepository.save(commodity);
@@ -80,7 +86,17 @@ public class GoodsController {
         //model.addAttribute(commodities);
         ModelAndView model2 = new ModelAndView("catalog");
         model2.addObject("lists", commodities);
+        model2.addObject("searchRequest", new SearchRequest());
         //return "catalog";
+        return model2;
+    }
+
+    @RequestMapping(value="forCategory/{name}", method=GET)//,params = {""}
+    public ModelAndView showForCategory(Category category) {
+        List<Commodity> commodities = commodityRepository.findByCategory(category.getName());
+        ModelAndView model2 = new ModelAndView("catalog");
+        model2.addObject("lists", commodities);
+        model2.addObject("searchRequest", new SearchRequest());
         return model2;
     }
 
@@ -99,4 +115,12 @@ public class GoodsController {
         model.addAttribute("lists", commodities);
         return "catalog";
     }
+
+    final static Map<String, Boolean> RADIO_ITEMS = Collections.unmodifiableMap(
+            new LinkedHashMap<String, Boolean>() {
+                {
+                    put("Yes", true);
+                    put("No", false);
+                }
+            });
 }
