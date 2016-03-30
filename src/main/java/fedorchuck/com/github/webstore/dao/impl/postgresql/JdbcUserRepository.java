@@ -19,9 +19,10 @@
  * @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-package fedorchuck.com.github.webstore.data;
+package fedorchuck.com.github.webstore.dao.impl.postgresql;
 
-import fedorchuck.com.github.webstore.User;
+import fedorchuck.com.github.webstore.dao.UserRepository;
+import fedorchuck.com.github.webstore.domainmodels.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;

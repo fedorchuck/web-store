@@ -1,7 +1,8 @@
-package fedorchuck.com.github.webstore.data;
+package fedorchuck.com.github.webstore.dao.impl.postgresql;
 
-import fedorchuck.com.github.webstore.Category;
-import fedorchuck.com.github.webstore.Commodity;
+import fedorchuck.com.github.webstore.dao.impl.postgresql.JdbcCommodityRepository;
+import fedorchuck.com.github.webstore.domainmodels.Category;
+import fedorchuck.com.github.webstore.domainmodels.Commodity;
 import fedorchuck.com.github.webstore.Config;
 import org.junit.Assert;
 import org.junit.Before;

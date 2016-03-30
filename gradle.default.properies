@@ -17,4 +17,4 @@ springVersion=4.0.7.RELEASE
 springWebflowVersion=2.4.1.RELEASE
 thymeleafVersion = 2.1.3.RELEASE
 
-glassfishHome =/way/to/glassfish4/.
+glassfishHome =/path/to/glassfish4/.

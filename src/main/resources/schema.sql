@@ -16,8 +16,9 @@ CREATE TABLE users
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE users
-  OWNER TO postgres;
+-- we should run script under correct user
+-- ALTER TABLE users
+--   OWNER TO postgres;
 
 -- Table: goods
 -- DROP TABLE goods;
@@ -39,8 +40,10 @@ CREATE TABLE goods
 WITH (
 OIDS=FALSE
 );
-ALTER TABLE goods
-OWNER TO postgres;
+
+-- we should run script under correct user
+-- ALTER TABLE goods
+-- OWNER TO postgres;
 
 
 

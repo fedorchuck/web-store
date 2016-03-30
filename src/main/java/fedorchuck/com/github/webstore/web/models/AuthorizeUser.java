@@ -19,9 +19,10 @@
  * @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-package fedorchuck.com.github.webstore;
+package fedorchuck.com.github.webstore.web.models;
 
-import fedorchuck.com.github.webstore.data.UserRepository;
+import fedorchuck.com.github.webstore.dao.UserRepository;
+import fedorchuck.com.github.webstore.domainmodels.User;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

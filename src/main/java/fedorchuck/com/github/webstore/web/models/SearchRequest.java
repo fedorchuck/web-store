@@ -19,29 +19,23 @@
  * @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-package fedorchuck.com.github.webstore;
+package fedorchuck.com.github.webstore.web.models;
 
 @Deprecated
-public class Category {
+public class SearchRequest {
     private String name;
-
-    public Category() {}
-
-    public Category(String category) {
-        this.name = category;
-    }
 
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name.toLowerCase();
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "SearchRequest{" +
                 "name='" + name + '\'' +
                 '}';
     }

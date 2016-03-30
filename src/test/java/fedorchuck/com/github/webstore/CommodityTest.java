@@ -1,5 +1,6 @@
 package fedorchuck.com.github.webstore;
 
+import fedorchuck.com.github.webstore.domainmodels.Commodity;
 import org.junit.Test;
 
 import java.util.UUID;

@@ -19,12 +19,12 @@
  * @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-package fedorchuck.com.github.webstore.web;
+package fedorchuck.com.github.webstore.web.controllers;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
-import fedorchuck.com.github.webstore.Category;
-import fedorchuck.com.github.webstore.SearchRequest;
+import fedorchuck.com.github.webstore.domainmodels.Category;
+import fedorchuck.com.github.webstore.web.models.SearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +32,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import fedorchuck.com.github.webstore.Commodity;
-import fedorchuck.com.github.webstore.data.CommodityRepository;
+import fedorchuck.com.github.webstore.domainmodels.Commodity;
+import fedorchuck.com.github.webstore.dao.CommodityRepository;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
