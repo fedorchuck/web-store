@@ -47,16 +47,12 @@ import java.nio.charset.Charset;
 @EnableWebMvc
 @ComponentScan("fedorchuck.com.github.webstore.web")
 public class WebConfig extends WebMvcConfigurerAdapter {
-
-	// It don't helps
-    @Bean
-    public StringHttpMessageConverter stringHttpMessageConverter() {
-        return new StringHttpMessageConverter(Charset.forName("UTF-8"));
-    }
+    
     @Bean
     public ViewResolver viewResolver(SpringTemplateEngine templateEngine) {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine);
+        viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
     }
 
@@ -73,6 +69,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
 
