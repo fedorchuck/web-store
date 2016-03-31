@@ -22,7 +22,7 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="jdbcUserRepository" class="fedorchuck.com.github.webstore.data.JdbcUserRepository">
+    <bean id="jdbcUserRepository" class="fedorchuck.com.github.webstore.dao.impl.postgresql.JdbcUserRepository">
         <constructor-arg ref="jdbcOperations"/>
     </bean>
 

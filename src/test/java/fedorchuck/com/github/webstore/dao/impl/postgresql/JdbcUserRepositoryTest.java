@@ -1,7 +1,8 @@
-package fedorchuck.com.github.webstore.data;
+package fedorchuck.com.github.webstore.dao.impl.postgresql;
 
 import fedorchuck.com.github.webstore.Config;
-import fedorchuck.com.github.webstore.User;
+import fedorchuck.com.github.webstore.dao.impl.postgresql.JdbcUserRepository;
+import fedorchuck.com.github.webstore.domainmodels.User;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

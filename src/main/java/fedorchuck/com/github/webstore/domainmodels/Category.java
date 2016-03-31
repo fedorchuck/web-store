@@ -19,19 +19,30 @@
  * @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-package fedorchuck.com.github.webstore.data;
+package fedorchuck.com.github.webstore.domainmodels;
 
-import fedorchuck.com.github.webstore.User;
+@Deprecated
+public class Category {
+    private String name;
 
-import java.util.List;
-import java.util.UUID;
+    public Category() {}
 
-public interface UserRepository {
-    User save(User user);
-    User findByUsername(String username);
-    User findByUser_id(UUID user_id);
-    List<User> findByUserRole(Integer userRole);
+    public Category(String category) {
+        this.name = category;
+    }
 
-    Boolean deleteByUsername(String username);
-    Boolean deleteByUser_id(UUID user_id);
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name.toLowerCase();
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

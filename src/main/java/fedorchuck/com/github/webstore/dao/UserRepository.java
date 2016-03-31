@@ -19,26 +19,19 @@
  * @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-package fedorchuck.com.github.webstore.data;
+package fedorchuck.com.github.webstore.dao;
 
-import fedorchuck.com.github.webstore.Category;
-import fedorchuck.com.github.webstore.Commodity;
+import fedorchuck.com.github.webstore.domainmodels.User;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface CommodityRepository {
-    Commodity save(Commodity commodity);
-    Commodity findByCommodity_id(UUID commodity_id);
-    List<Commodity> findByName(String name);
-    List<Commodity> findByManufacturer(String manufacturer);
-    List<Commodity> findByCost(Double cost);
-    List<Commodity> findByQuantity(Integer quantity);
-    List<Commodity> findBySell_out(Boolean sell_out);
-    List<Commodity> findByCategory(String category);
-    List<Category> findByCategory();
-    List<Commodity> findByAddedBy(UUID addedBy);
-    List<Commodity> all();
+public interface UserRepository {
+    User save(User user);
+    User findByUsername(String username);
+    User findByUser_id(UUID user_id);
+    List<User> findByUserRole(Integer userRole);
 
-    Boolean deleteByCommodity_id(UUID commodity_id);
+    Boolean deleteByUsername(String username);
+    Boolean deleteByUser_id(UUID user_id);
 }

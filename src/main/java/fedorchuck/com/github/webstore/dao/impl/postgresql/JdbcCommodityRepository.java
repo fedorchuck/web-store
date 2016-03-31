@@ -19,10 +19,11 @@
  * @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-package fedorchuck.com.github.webstore.data;
+package fedorchuck.com.github.webstore.dao.impl.postgresql;
 
-import fedorchuck.com.github.webstore.Category;
-import fedorchuck.com.github.webstore.Commodity;
+import fedorchuck.com.github.webstore.dao.CommodityRepository;
+import fedorchuck.com.github.webstore.domainmodels.Category;
+import fedorchuck.com.github.webstore.domainmodels.Commodity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -166,7 +167,7 @@ public class JdbcCommodityRepository implements CommodityRepository {
     public List<Category> findByCategory() {
         try {
             return jdbc.query(
-                    "SELECT DISTINCT category FROM goods;",
+                    "SELECT DISTINCT category FROM goods",
                     new CategoryRowMapper()
             );
         } catch (EmptyResultDataAccessException ex){
