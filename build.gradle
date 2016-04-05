@@ -21,6 +21,8 @@ dependencies {
     providedCompile "javax.servlet.jsp:jsp-api:$jspApiVersion"
     providedCompile "javax.el:javax.el-api:$jspElVersion"
 
+    providedCompile "com.github.jsimone:webapp-runner:8.0.30.2"
+
     testCompile "junit:junit-dep:$junitVersion"
     testCompile "org.springframework:spring-test:$springVersion"
     testCompile "org.mockito:mockito-core:$mockitoVersion"
@@ -36,23 +38,40 @@ repositories {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.1'
+    gradleVersion = '2.12'
 }
 
-war {
-    baseName = 'web-store'
-}
+war.baseName = rootProject.name
+
 glassfish {
     homeDirectoryPath =  "$glassfishHome" ;
 }
-/**
- *  For more information about Exec tasks see
- *  http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.Exec.html
- */
-/*task run(dependsOn: 'war', type:Exec){
-    workingDir "/home/v/Programs/glassfish4/bin"
 
-    commandLine "./asadmin"
-
-    args "deploy", "--force=true", "${war.archivePath}"
+/*glassfish4
+    //For more information about Exec tasks see http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.Exec.html
+    task run(dependsOn: 'war', type:Exec){
+        workingDir "/home/v/Programs/glassfish4/bin"
+        commandLine "./asadmin"
+        args "deploy", "--force=true", "${war.archivePath}"
 }*/
+
+task copyTomcat(type: Copy) {
+    into "$buildDir/tomcat/"
+    rename('(.+)-.+\\.jar','$1\\.jar')
+    from configurations.providedCompile.filter {
+        it.getName().contains('webapp-runner')
+    }
+}
+
+tasks['build'].dependsOn(copyTomcat)
+
+task runTomcat(type: JavaExec) {
+
+    dependsOn copyTomcat
+    dependsOn war
+
+    main = "webapp.runner.launch.Main"
+    classpath = files("$buildDir/tomcat/webapp-runner.jar")
+    args=["$buildDir/libs/web-store.war"]
+    workingDir = projectDir
+}
