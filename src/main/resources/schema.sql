@@ -1,5 +1,13 @@
+-- Database: webstore
+-- DROP DATABASE webstore;
+CREATE DATABASE webstore
+WITH OWNER = --your user
+ENCODING = 'UTF8'
+TABLESPACE = pg_default
+LC_COLLATE = 'en_US.UTF-8'
+LC_CTYPE = 'en_US.UTF-8'
+CONNECTION LIMIT = -1;
 -- Table: users
-
 -- DROP TABLE users;
 CREATE TABLE users
 (
@@ -16,9 +24,9 @@ CREATE TABLE users
 WITH (
   OIDS=FALSE
 );
--- we should run script under correct user
+-- should run script under correct user
 -- ALTER TABLE users
---   OWNER TO postgres;
+-- OWNER TO postgres;
 
 -- Table: goods
 -- DROP TABLE goods;
@@ -40,8 +48,7 @@ CREATE TABLE goods
 WITH (
 OIDS=FALSE
 );
-
--- we should run script under correct user
+-- should run script under correct user
 -- ALTER TABLE goods
 -- OWNER TO postgres;
 
