@@ -65,5 +65,5 @@ task stage {
 
 defaultTasks 'clean'
 task clean () {
-    delete 'out', 'build', 'target', 'gradle'
+    delete 'out', 'build', 'target'
 }

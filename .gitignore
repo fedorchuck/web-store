@@ -3,7 +3,6 @@
 /bin/
 /classes/
 /out/
-/gradle/
 .springBeans
 .settings
 .project
