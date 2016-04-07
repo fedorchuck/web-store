@@ -1,6 +1,9 @@
 /build/
 /target/
 /bin/
+/classes/
+/out/
+/gradle/
 .springBeans
 .settings
 .project
@@ -9,5 +12,4 @@
 .iml
 .idea/
 /*.iml
-/classes/
 /gradle.properties

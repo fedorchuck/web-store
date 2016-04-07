@@ -1,8 +1,6 @@
 
 plugins {
     id 'war'
-    id 'jetty'
-    id "jp.empressia.glassfish" version "0.2.5"
 }
 
 dependencies {
@@ -30,10 +28,6 @@ dependencies {
 }
 
 repositories {
-    maven { url 'http://maven.springframework.org/release' }
-    maven { url 'http://maven.springframework.org/milestone' }
-    maven { url 'http://maven.springframework.org/snapshot' }
-    maven { url 'http://download.java.net/maven/2' }
     mavenCentral()
 }
 
@@ -42,18 +36,6 @@ task wrapper(type: Wrapper) {
 }
 
 war.baseName = rootProject.name
-
-glassfish {
-    homeDirectoryPath =  "$glassfishHome" ;
-}
-
-/*glassfish4
-    //For more information about Exec tasks see http://www.gradle.org/docs/current/dsl/org.gradle.api.tasks.Exec.html
-    task run(dependsOn: 'war', type:Exec){
-        workingDir "/home/v/Programs/glassfish4/bin"
-        commandLine "./asadmin"
-        args "deploy", "--force=true", "${war.archivePath}"
-}*/
 
 task copyTomcat(type: Copy) {
     into "$buildDir/tomcat/"
@@ -74,4 +56,14 @@ task runTomcat(type: JavaExec) {
     classpath = files("$buildDir/tomcat/webapp-runner.jar")
     args=["$buildDir/libs/web-store.war"]
     workingDir = projectDir
+}
+
+task stage {
+    dependsOn build
+    dependsOn copyTomcat
+}
+
+defaultTasks 'clean'
+task clean () {
+    delete 'out', 'build', 'target', 'gradle'
 }

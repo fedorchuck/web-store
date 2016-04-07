@@ -6,6 +6,7 @@ import fedorchuck.com.github.webstore.domainmodels.Commodity;
 import fedorchuck.com.github.webstore.Config;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -24,6 +25,7 @@ public class JdbcCommodityRepositoryTest {
     private JdbcCommodityRepository jdbc;
 
     @Before
+    @Ignore
     public void setUp() {
         try {
             //TODO: should be rewritten.
@@ -42,6 +44,7 @@ public class JdbcCommodityRepositoryTest {
     }
 
     @Test       //Save
+    @Ignore
     public void test00() {
         try {
             Commodity commodity = getNewCommodity();
@@ -53,6 +56,7 @@ public class JdbcCommodityRepositoryTest {
     }
 
     @Test       //findByName
+    @Ignore
     public void test01() {
         try {
             Commodity testCommodity = getNewCommodity();
@@ -71,6 +75,7 @@ public class JdbcCommodityRepositoryTest {
     }
 
     @Test       //findByCost
+    @Ignore
     public void test02() {
         try {
             Commodity testCommodity = getNewCommodity();
@@ -89,6 +94,7 @@ public class JdbcCommodityRepositoryTest {
     }
 
     @Test       //findByManufacturer {
+    @Ignore
     public void test03() {
         try {
             Commodity testCommodity = getNewCommodity();
@@ -107,6 +113,7 @@ public class JdbcCommodityRepositoryTest {
     }
 
     @Test       //findByCommodity_id
+    @Ignore
     public void test04() {
         try {
             Commodity testCommodity = getNewCommodity();
@@ -117,6 +124,7 @@ public class JdbcCommodityRepositoryTest {
     }
 
     @Test       //findByQuantity
+    @Ignore
     public void test05() {
         try {
             Commodity testCommodity = getNewCommodity();
@@ -135,6 +143,7 @@ public class JdbcCommodityRepositoryTest {
     }
 
     @Test       //findBySell_out
+    @Ignore
     public void test06() {
         try {
             Commodity testCommodity = getNewCommodity();
@@ -152,6 +161,7 @@ public class JdbcCommodityRepositoryTest {
         }
     }
     @Test       //findByCategory
+    @Ignore
     public void test07() {
         try {
             Commodity testCommodity = getNewCommodity();
@@ -169,6 +179,7 @@ public class JdbcCommodityRepositoryTest {
         }
     }
     @Test       //findByAddedBy
+    @Ignore
     public void test08() {
         try {
             Commodity testCommodity = getNewCommodity();
@@ -187,6 +198,7 @@ public class JdbcCommodityRepositoryTest {
     }
 
     @Test       //findByCategory
+    @Ignore
     public void test09() {
         try {
             test00();
@@ -206,6 +218,7 @@ public class JdbcCommodityRepositoryTest {
     }
 
     @Test       //deleteByCommodity_id
+    @Ignore
     public void test10() {
         try {
             //test1();
