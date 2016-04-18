@@ -35,6 +35,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.Properties;
 
 @Configuration
@@ -47,6 +50,7 @@ public class DataConfig {
     private String password;
 
     private final static Logger logger = LoggerFactory.getLogger(DataConfig.class);
+    private Resource res;
 
     @Bean
     public DataSource dataSource(){
@@ -61,8 +65,18 @@ public class DataConfig {
 
     @Autowired
     public void setResourceLoader(ResourceLoader resourceLoader) {
+//        this.resourceLoader = resourceLoader;
+//        readConfig();
         this.resourceLoader = resourceLoader;
-        readConfig();
+        Map<String, String> env = System.getenv();
+
+        if (env.get("DATABASE_URL")!=null) {
+            getConfigEnv(env);
+        }
+        else {
+            getConfig();
+            readConfig();
+        }
     }
 
     @Bean
@@ -107,15 +121,6 @@ public class DataConfig {
      */
     @SuppressWarnings("unchecked")
     private void readConfig() {
-        Resource res= resourceLoader.getResource("classpath:../jdbc.properties");
-        if(!res.exists()){
-            res= resourceLoader.getResource("classpath:jdbc.properties");
-            if(!res.exists()){
-                String massageError = "Can't read configuration for jdbc.properties";
-                logger.error("problem read config. reason: ", massageError);
-                throw new IllegalStateException(massageError);
-            }
-        }
         Properties property = new Properties();
         try (InputStream is = res.getInputStream()) {
             property.load(is);
@@ -138,6 +143,33 @@ public class DataConfig {
                 IllegalAccessException |
                 NullPointerException e) {
             logger.error("problem read config. reason: ", e);
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void getConfigEnv(Map<String, String> env){
+        URI dbUri = null;
+        try {
+            dbUri = new URI(System.getenv("DATABASE_URL"));
+        } catch (URISyntaxException e) {
+            logger.error("problem read config. reason: ", e);
+        }
+
+        driverClassName = "org.postgresql.Driver";
+        username = dbUri.getUserInfo().split(":")[0];
+        password = dbUri.getUserInfo().split(":")[1];
+        url = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+    }
+
+    private void getConfig() {
+        res = resourceLoader.getResource("classpath:../jdbc.properties");
+        if(!res.exists()){
+            res= resourceLoader.getResource("classpath:jdbc.properties");
+            if(!res.exists()){
+                String massageError = "Can't read configuration for jdbc.properties";
+                logger.error("problem read config. reason: ", massageError);
+                throw new IllegalStateException(massageError);
+            }
         }
     }
 }
