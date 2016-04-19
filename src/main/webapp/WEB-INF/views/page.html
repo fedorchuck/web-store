@@ -3,45 +3,51 @@
 
 <body>
     <div th:fragment="header">
-        <!--<a th:href="@{/}">
-            <img th:src="@{/resources/images/webstore_logo.png}" border="0" /></a>-->
-        <div class="row">
-            <div class="col-md-2 text-center text-uppercase">
-                <!--<div class="col-lg-8"-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 text-center text-uppercase">
                     <a th:href="@{/}"><h2>web store</h2></a>
-                <!--</div>
-                <div class="col-lg-6">
-                    <a th:href="@{/catalog}"><h4>catalog</h4></a>-->
-                    <!--<a th:href="@{/goods/all}"><h4>catalog</h4></a>
-                </div>-->
-            </div>
-            <div class="col-md-8 search-panel text-center">
-                <form method="POST" th:object="${searchRequest}" action="searchRequest" >
-                    <label>
-                        <input type="text" th:field="*{name}"/>
-                    </label>
-                    <input type="submit" value="find" th:value="find" />
-                </form>
-            </div>
+                </div>
+                <div class="col-md-8 search-panel text-center">
+                    <form method="POST" th:object="${searchRequest}" action="searchRequest" >
+                        <label>
+                            <input type="text" th:field="*{name}"/>
+                        </label>
+                        <input type="submit" value="find" th:value="find" />
+                    </form>
+                </div>
 
-            <div class="col-md-2 user-control">
-                <div class="col-md-12 text-lowercase text-center">
-                    <div class="col-md-6">
-                        <a th:href="@{/user/authorize}">authorize</a>
-                    </div>
-                    <div class="col-md-6">
-                        <a th:href="@{/user/register}">register</a>
+                <div class="col-md-2 user-control">
+                    <div class="col-md-12 text-lowercase text-center">
+                        <div class="col-md-6">
+                            <a th:href="@{/user/authorize}">authorize</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a th:href="@{/user/register}">register</a>
+                        </div>
                     </div>
                 </div>
             </div>
+            <hr />
         </div>
-        <hr />
     </div>
 
     <!--<div>Content goes here</div>-->
 
-
-        <div th:fragment="copy">Copyright &copy; Volodymyr Fedorchuk</div>
+    <div th:fragment="copy">
+        <div class="container">
+            <div class="row">
+                <div class="text-center">
+                    <h5>
+                        &copy; 2016
+                        <a href="https://github.com/fedorchuck"> Volodymyr Fedorchuk </a>
+                        <a href="http://www.gnu.org/licenses/gpl-3.0.en.html"> License </a>
+                        <a href="https://github.com/fedorchuck/web-store#web-store"> Source </a>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 

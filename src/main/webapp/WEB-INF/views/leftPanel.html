@@ -2,20 +2,25 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <body>
-<div th:fragment="categories" class="left-panel">
-    <div class="text-left text-uppercase">
-        <h3>
-            <a th:href="@{/goods/all}">catalog</a>
-        </h3>
+<div th:fragment="categories">
+    <div class="container">
+        <div class="row">
+            <div class="text-left text-uppercase">
+                <h3>
+                    <a th:href="@{/goods/all}">catalog</a>
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="text-left text-lowercase" th:each="category : ${categories}">
+                <h4>
+                    <a th:text="${category.name}"
+                       th:href="@{/goods/forCategory/}+${category.name}" > *name* </a>
+                </h4>
+                <hr />
+            </div>
+        </div>
     </div>
-    <div class="text-left text-lowercase" th:each="category : ${categories}">
-        <h4>
-            <a th:text="${category.name}"
-               th:href="@{/goods/forCategory/}+${category.name}" > *name* </a>
-        </h4>
-        <hr />
-    </div>
-
 </div>
 </body>
 

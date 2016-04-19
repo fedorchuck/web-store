@@ -1,26 +1,32 @@
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-        <meta charset="utf-8"/>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
   <title>web store</title>
   <link rel="stylesheet"
         type="text/css"
-        th:href="@{/resources/css/style.css}" />
+        th:href="@{/resources/css/bootstrap.css}" />
   <link rel="stylesheet"
         type="text/css"
-        th:href="@{/resources/css/bootstrap.css}" />
+        th:href="@{/resources/css/style.css}" />
 </head>
 <body>
 <div id="header" th:include="page :: header"></div>
-    <div class="left-bar col-md-2" id="categories" th:include="leftPanel::categories">
 
-    </div>
-    <div class="container col-md-10 text-center">
-        <a th:href="@{/goods/add}">add goods</a> <br/>
-
-    </div>
+    <div id="categories" th:include="leftPanel::categories"></div>
+<!--class="left-bar col-md-2"-->
+    <!--<div class="col-md-10 text-center">-->
+        <div class="container">
+            <div class="row">
+                <a th:href="@{/goods/add}">add goods</a>
+                <br/>
+            </div>
+        </div>
+    <!--</div>-->
 <footer>
-<div id="" class="footer text-center" th:include="page :: copy"></div>
-    </footer>
+    <div id="footer" th:include="page :: copy"></div>
+</footer>
 </body>
 </html>
