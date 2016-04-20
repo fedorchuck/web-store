@@ -1,17 +1,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>web store</title>
-  <link rel="stylesheet"
-        type="text/css"
-        th:href="@{/resources/css/style.css}" />
-  <link rel="stylesheet"
-        type="text/css"
-        th:href="@{/resources/css/bootstrap.css}" />
+    <title>web store</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="Keywords" content="HTML,CSS,JavaScript,SQL,Bootstrap,Java,Spring,Spring example,Spring example,
+    Spring Thymeleaf,Thymeleaf,Thymeleaf example,Postgres Spring,Web development,primer,lessons,examples,source code"/>
+    <meta name="Description" content="Test web application for technologies learning"/>
+
+    <link rel="stylesheet"
+          type="text/css"
+          th:href="@{/resources/css/bootstrap.css}" />
+    <link rel="stylesheet"
+          type="text/css"
+          th:href="@{/resources/css/style.css}" />
 </head>
 <body>
 <div id="header" th:include="page :: header"></div>
-<div id="content" class="col-md-12 text-center">
+<div id="content" class="container">
     <h1>add commodity</h1>
     <form method="POST" th:object="${commodity}" >
         <div class="errors" th:if="${#fields.hasErrors('*')}">
@@ -93,6 +99,9 @@
         <input type="submit" value="add" />
     </form>
 </div>
-<div id="footer" class="text-center" th:include="page :: copy"></div>
+
+<footer>
+    <div id="footer" class="footer" th:include="page :: copy"></div>
+</footer>
 </body>
 </html>

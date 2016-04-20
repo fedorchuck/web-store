@@ -1,28 +1,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>web store</title>
-  <link rel="stylesheet"
-        type="text/css"
-        th:href="@{/resources/css/style.css}" />
-  <link rel="stylesheet"
-        type="text/css"
-        th:href="@{/resources/css/bootstrap.css}" />
+    <title>web store</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="Keywords" content="HTML,CSS,JavaScript,SQL,Bootstrap,Java,Spring,Spring example,Spring example,
+    Spring Thymeleaf,Thymeleaf,Thymeleaf example,Postgres Spring,Web development,primer,lessons,examples,source code"/>
+    <meta name="Description" content="Test web application for technologies learning"/>
+
+    <link rel="stylesheet"
+          type="text/css"
+          th:href="@{/resources/css/bootstrap.css}" />
+    <link rel="stylesheet"
+          type="text/css"
+          th:href="@{/resources/css/style.css}" />
 </head>
 <body>
 <div id="header" th:include="page :: header"></div>
-<div id="content" class="col-md-12 text-center">
-    <ul class="lists">
-        <li th:each="commodity : ${lists}"
-            th:id="'commodity_' + ${commodity.id}">
-            <div class="name" th:text="${commodity.name}"> *name* </div>
-            <div class="manufacturer" th:text="${commodity.manufacturer}"> *manufacturer* </div>
-            <div class="cost" th:text="${commodity.cost}"> *cost* </div>
-            <div class="characteristics" th:text="${commodity.characteristics}"> *characteristics* </div>
-            <div class="description" th:text="${commodity.description}"> *description* </div>
-        </li>
-    </ul>
+<div id="content" class="container">
+    <div class="col-md-2">
+        <div class="left-bar">
+            <div id="categories" th:include="leftPanel::categories"></div>
+        </div>
+    </div>
+    <div class="col-md-10 ">
+        <div class="row">
+            <div class="descriptionMessage" th:include="message::description"></div>
+        </div>
+        <div class="row">
+            <ul class="lists" style="list-style-type:none">
+                <li th:each="commodity : ${lists}"
+                    th:id="'commodity_' + ${commodity.id}">
+                    <div class="name" th:text="${commodity.name}"> *name* </div>
+                    <div class="manufacturer" th:text="${commodity.manufacturer}"> *manufacturer* </div>
+                    <div class="cost" th:text="${commodity.cost}"> *cost* </div>
+                    <div class="characteristics" th:text="${commodity.characteristics}"> *characteristics* </div>
+                    <div class="description" th:text="${commodity.description}"> *description* </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
-<div id="footer" class="text-center" th:include="page :: copy"></div>
+
+<footer>
+    <div id="footer" class="footer" th:include="page :: copy"></div>
+</footer>
 </body>
 </html>

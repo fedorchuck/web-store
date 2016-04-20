@@ -94,17 +94,23 @@ public class GoodsController {
     @RequestMapping(value="forCategory/{name}", method=GET)//,params = {""}
     public ModelAndView showForCategory(Category category) {
         List<Commodity> commodities = commodityRepository.findByCategory(category.getName());
+        List<Category> categories = commodityRepository.findByCategory();
         ModelAndView model2 = new ModelAndView("catalog");
         model2.addObject("lists", commodities);
         model2.addObject("searchRequest", new SearchRequest());
+        model2.addObject("categories", categories);
+
         return model2;
     }
 
     @RequestMapping(value = "all", method = GET)
     public String showAll(Model model) {
         List<Commodity> commodities = commodityRepository.all();
+        List<Category> categories = commodityRepository.findByCategory();
         model.addAttribute("lists", commodities);
         model.addAttribute("searchRequest", new SearchRequest());
+        model.addAttribute("categories", categories);
+
         return "catalog";
     }
 

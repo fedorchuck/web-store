@@ -5,10 +5,10 @@
     <div th:fragment="header">
         <div class="container">
             <div class="row">
-                <div class="col-md-2 text-center text-uppercase">
+                <div class="col-md-3 text-center text-uppercase">
                     <a th:href="@{/}"><h2>web store</h2></a>
                 </div>
-                <div class="col-md-8 search-panel text-center">
+                <div class="col-md-7 search-panel text-center">
                     <form method="POST" th:object="${searchRequest}" action="searchRequest" >
                         <label>
                             <input type="text" th:field="*{name}"/>
@@ -18,12 +18,11 @@
                 </div>
 
                 <div class="col-md-2 user-control">
-                    <div class="col-md-12 text-lowercase text-center">
-                        <div class="col-md-6">
-                            <a th:href="@{/user/authorize}">authorize</a>
-                        </div>
-                        <div class="col-md-6">
-                            <a th:href="@{/user/register}">register</a>
+                    <div class="row">
+                        <div class="text-lowercase text-center">
+                            <a th:href="@{/user/authorize}">Log in</a>
+                            <span>or</span>
+                            <a th:href="@{/user/register}">Sign up</a>
                         </div>
                     </div>
                 </div>
