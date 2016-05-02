@@ -1,3 +1,4 @@
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
@@ -9,9 +10,10 @@
                     <a th:href="@{/}"><h2>web store</h2></a>
                 </div>
                 <div class="col-md-7 search-panel text-center">
-                    <form method="POST" th:object="${searchRequest}" action="searchRequest" >
+                    <!--/*@thymesVar id="userActions" type="fedorchuck.com.github.webstore.web.models.UserActions"*/-->
+                    <form method="POST" th:object="${userActions}" action="searchRequest" >
                         <label>
-                            <input type="text" th:field="*{name}"/>
+                            <input type="text" th:field="*{searchRequest}"/>
                         </label>
                         <input type="submit" value="find" th:value="find" />
                     </form>
@@ -27,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <hr />
+            <!--<hr />-->
         </div>
     </div>
 

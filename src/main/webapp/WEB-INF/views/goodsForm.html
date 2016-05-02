@@ -16,7 +16,10 @@
           th:href="@{/resources/css/style.css}" />
 </head>
 <body>
-<div id="header" th:include="page :: header"></div>
+<header>
+    <div id="header" th:include="page :: header"></div>
+</header>
+
 <div id="content" class="container">
     <h1>add commodity</h1>
     <form method="POST" th:object="${commodity}" >

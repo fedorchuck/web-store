@@ -24,10 +24,10 @@ package fedorchuck.com.github.webstore.web.controllers;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import fedorchuck.com.github.webstore.domainmodels.Category;
-import fedorchuck.com.github.webstore.web.models.SearchRequest;
+import fedorchuck.com.github.webstore.web.models.UserActions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+
+@Scope("session")
 @RequestMapping("/goods")
 public class GoodsController {
 
@@ -54,75 +56,75 @@ public class GoodsController {
     }
 
     @RequestMapping(value = "add", method = GET)
-    public String showGoodsForm(Model model){
-        model.addAttribute(new Commodity());
-        model.addAttribute("searchRequest", new SearchRequest());
-        model.addAttribute("radioItems", RADIO_ITEMS);
-        return "goodsForm";
+    public ModelAndView showGoodsForm(ModelAndView model){
+        model.addObject(new Commodity());
+        model.addObject("userActions", new UserActions());
+        model.addObject("radioItems", RADIO_ITEMS);
+        model.setViewName("goodsForm");
+        return model;
     }
 
     @RequestMapping(value = "add", method = POST)
-    public /*String*/ ModelAndView processAddCommodities(
+    public ModelAndView processAddCommodities(
             @Valid Commodity commodity,
             Errors errors) {
         if (errors.hasErrors()) {
             ModelAndView model = new ModelAndView("goodsForm");
-            model.addObject("searchRequest", new SearchRequest());
+            model.addObject("userActions", new UserActions());
             model.addObject("radioItems", RADIO_ITEMS);
-            return model;//"goodsForm";
+            return model;
         }
         commodityRepository.save(commodity);
         ModelAndView model = new ModelAndView("redirect:/goods/" + commodity.getName());
         model.addObject(new Commodity());
-        model.addObject("searchRequest", new SearchRequest());
+        model.addObject("userActions", new UserActions());
 
-        //return "redirect:/goods/" + commodity.getName();
         return model;
     }
 
     @RequestMapping(value="/{name}", method=GET)
-    public ModelAndView showCommodity(@PathVariable String name, Model model) {
+    public ModelAndView showCommodity(@PathVariable String name) {
         List<Commodity> commodities = commodityRepository.findByName(name);
-        //model.addAttribute(commodities);
         ModelAndView model2 = new ModelAndView("catalog");
         model2.addObject("lists", commodities);
-        model2.addObject("searchRequest", new SearchRequest());
-        //return "catalog";
+        model2.addObject("userActions", new UserActions());
         return model2;
     }
 
-    @RequestMapping(value="forCategory/{name}", method=GET)//,params = {""}
+    @RequestMapping(value="forCategory/{name}", method=GET)
     public ModelAndView showForCategory(Category category) {
         List<Commodity> commodities = commodityRepository.findByCategory(category.getName());
         List<Category> categories = commodityRepository.findByCategory();
-        ModelAndView model2 = new ModelAndView("catalog");
-        model2.addObject("lists", commodities);
-        model2.addObject("searchRequest", new SearchRequest());
-        model2.addObject("categories", categories);
+        ModelAndView model = new ModelAndView("catalog");
+        model.addObject("lists", commodities);
+        model.addObject("userActions", new UserActions());
+        model.addObject("categories", categories);
 
-        return model2;
+        return model;
     }
 
     @RequestMapping(value = "all", method = GET)
-    public String showAll(Model model) {
+    public ModelAndView showAll() {
+        ModelAndView model = new ModelAndView("catalog");
         List<Commodity> commodities = commodityRepository.all();
         List<Category> categories = commodityRepository.findByCategory();
-        model.addAttribute("lists", commodities);
-        model.addAttribute("searchRequest", new SearchRequest());
-        model.addAttribute("categories", categories);
+        model.addObject("lists", commodities);
+        model.addObject("userActions", new UserActions());
+        model.addObject("categories", categories);
 
-        return "catalog";
+        return model;
     }
 
     @RequestMapping(value="searchRequest", method=POST)
-    public String processFindCommodity(SearchRequest commodity, Model model) {
+    public ModelAndView processFindCommodity(UserActions commodity, ModelAndView model) {
         //TODO: add validation
-        List<Commodity> commodities = commodityRepository.findByName(commodity.getName());
-        model.addAttribute("lists", commodities);
-        return "catalog";
+        List<Commodity> commodities = commodityRepository.findByName(commodity.getSearchRequest());
+        model.addObject("lists", commodities);
+        model.setViewName("catalog");
+        return model;
     }
 
-    final static Map<String, Boolean> RADIO_ITEMS = Collections.unmodifiableMap(
+    private final static Map<String, Boolean> RADIO_ITEMS = Collections.unmodifiableMap(
             new LinkedHashMap<String, Boolean>() {
                 {
                     put("Yes", true);

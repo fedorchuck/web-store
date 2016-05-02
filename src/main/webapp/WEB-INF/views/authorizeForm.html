@@ -17,7 +17,10 @@
           th:href="@{/resources/css/style.css}" />
 </head>
 <body>
-<div id="header" th:include="page :: header"></div>
+<header>
+    <div id="header" th:include="page :: header"></div>
+</header>
+
 <div id="content" class="container">
     <h1>Authorize</h1>
     <form th:object="${authorizeUser}" method="POST" >

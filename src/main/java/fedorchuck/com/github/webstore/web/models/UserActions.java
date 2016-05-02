@@ -19,40 +19,26 @@
  *  @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-body {
-    font-family: sans-serif;
-}
+package fedorchuck.com.github.webstore.web.models;
 
-.row {
-    margin-left: 2%;
-    margin-right: 2%;
-}
+public class UserActions {
+    private String searchRequest;
 
-.search-panel, .user-control {
-    margin-top: 2%;
-    margin-bottom: 2%;
-}
+    public UserActions() {
+    }
 
-.left-bar {
-    /*margin-top: -6%;*/
-    margin-bottom: 2%;
-    padding-left: -2%;
-}
+    public String getSearchRequest() {
+        return searchRequest;
+    }
 
-.descriptionMessage {
-    background-color: #FFF599;
-    color: #2B8E00;
-    margin-top: 2%;
-    margin-bottom: 2%;
-}
+    public void setSearchRequest(String searchRequest) {
+        this.searchRequest = searchRequest;
+    }
 
-.header {
-    background-color: #f1f1f1;
-    display: block;
-}
-
-.footer {
-    background-color: #f1f1f1;/*#62B1D0;*/
-    margin-top: 30%;
-    height: 5em;
+    @Override
+    public String toString() {
+        return "UserActions{" +
+                "searchRequest='" + searchRequest + '\'' +
+                '}';
+    }
 }

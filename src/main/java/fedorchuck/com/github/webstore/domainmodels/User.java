@@ -63,18 +63,6 @@ public class User {
 
     public User(
             String username, String password, String firstName, String lastName,
-            String email, Integer role) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-        this.user_id = UUID.randomUUID();
-    }
-
-    public User(
-            String username, String password, String firstName, String lastName,
             String email, Integer role, UUID user_id) {
         this.username = username;
         this.password = password;
@@ -174,7 +162,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return ":{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

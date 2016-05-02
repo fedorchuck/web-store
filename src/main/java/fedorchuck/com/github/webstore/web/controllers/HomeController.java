@@ -23,18 +23,20 @@ package fedorchuck.com.github.webstore.web.controllers;
 
 import fedorchuck.com.github.webstore.domainmodels.Category;
 import fedorchuck.com.github.webstore.domainmodels.Commodity;
-import fedorchuck.com.github.webstore.web.models.SearchRequest;
+import fedorchuck.com.github.webstore.web.models.UserActions;
 import fedorchuck.com.github.webstore.dao.CommodityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
+@Scope("session")
 @RequestMapping("/")
 public class HomeController {
 
@@ -46,21 +48,23 @@ public class HomeController {
     }
 
     @RequestMapping(method = GET)
-    public String home(Model model) {
-        model.addAttribute(new Commodity());
-        model.addAttribute("searchRequest", new SearchRequest());
+    public ModelAndView home() {
+        ModelAndView model = new ModelAndView("index");
+        model.addObject(new Commodity());
+        model.addObject("userActions", new UserActions());
 
         List<Category> categories = commodityRepository.findByCategory();
-        model.addAttribute("categories", categories);
+        model.addObject("categories", categories);
 
-        return "index";
+        return model;
     }
 
     @RequestMapping(value="searchRequest", method = POST)
-    public String processSearchRequest(SearchRequest searchRequest, Model model) {
+    public ModelAndView processSearchRequest(UserActions searchRequest) {
         //TODO: add validation
-        List<Commodity> response = commodityRepository.findByName(searchRequest.getName());
-        model.addAttribute("lists", response);
-        return "catalog";
+        List<Commodity> response = commodityRepository.findByName(searchRequest.getSearchRequest());
+        ModelAndView model = new ModelAndView("catalog");
+        model.addObject("lists", response);
+        return model;
     }
 }

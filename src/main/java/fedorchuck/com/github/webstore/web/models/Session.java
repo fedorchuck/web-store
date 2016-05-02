@@ -19,40 +19,43 @@
  *  @license GPL-3.0+ <http://spdx.org/licenses/GPL-3.0+>
  */
 
-body {
-    font-family: sans-serif;
-}
+package fedorchuck.com.github.webstore.web.models;
 
-.row {
-    margin-left: 2%;
-    margin-right: 2%;
-}
+import fedorchuck.com.github.webstore.domainmodels.Order;
+import fedorchuck.com.github.webstore.domainmodels.User;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-.search-panel, .user-control {
-    margin-top: 2%;
-    margin-bottom: 2%;
-}
+@Component
+@Scope("session")
+public class Session {
+    private User user;
+    private Order order;
 
-.left-bar {
-    /*margin-top: -6%;*/
-    margin-bottom: 2%;
-    padding-left: -2%;
-}
+    public Session() {
+    }
 
-.descriptionMessage {
-    background-color: #FFF599;
-    color: #2B8E00;
-    margin-top: 2%;
-    margin-bottom: 2%;
-}
+    public User getUser() {
+        return user;
+    }
 
-.header {
-    background-color: #f1f1f1;
-    display: block;
-}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-.footer {
-    background-color: #f1f1f1;/*#62B1D0;*/
-    margin-top: 30%;
-    height: 5em;
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    @Override
+    public String toString() {
+        return ":{" +
+                "user=" + user +
+                ", order=" + order +
+                '}';
+    }
 }

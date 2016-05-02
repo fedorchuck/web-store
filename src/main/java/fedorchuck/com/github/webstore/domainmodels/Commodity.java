@@ -67,21 +67,6 @@ public class Commodity {
     }
 
     public Commodity(
-            String name, String manufacturer, Double cost, Integer quantity, Boolean sell_out,
-            String characteristics, String description, String category, UUID addedBy) {
-        this.commodity_id = UUID.randomUUID();
-        this.name = name;
-        this.manufacturer = manufacturer;
-        this.cost = cost;
-        this.quantity = quantity;
-        this.sell_out = sell_out;
-        this.characteristics = characteristics;
-        this.description = description;
-        this.category = category;
-        this.addedBy = addedBy;
-    }
-
-    public Commodity(
             UUID commodity_id, String name, String manufacturer, Double cost, Integer quantity,
             Boolean sell_out, String characteristics, String description, String category, UUID addedBy) {
         this.commodity_id = commodity_id;
@@ -212,7 +197,7 @@ public class Commodity {
 
     @Override
     public String toString() {
-        return "Commodity{" +
+        return ":{" +
                 "id='" + id + '\'' +
                 ", commodity_id='" + commodity_id + '\'' +
                 ", name='" + name + '\'' +

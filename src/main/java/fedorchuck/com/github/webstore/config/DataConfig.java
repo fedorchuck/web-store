@@ -65,8 +65,6 @@ public class DataConfig {
 
     @Autowired
     public void setResourceLoader(ResourceLoader resourceLoader) {
-//        this.resourceLoader = resourceLoader;
-//        readConfig();
         this.resourceLoader = resourceLoader;
         Map<String, String> env = System.getenv();
 

@@ -4,27 +4,28 @@ plugins {
 }
 
 dependencies {
-    compile "org.springframework:spring-webmvc:$springVersion"
-    compile "org.springframework:spring-jdbc:$springVersion"
-    compile "org.postgresql:postgresql:$postgresqlVercion"
+    compile "org.springframework:spring-webmvc:4.0.7.RELEASE"
 
-    compile "org.hibernate:hibernate-validator:$hibernateValidatorVersion"
-    compile "org.apache.commons:commons-lang3:$commonsLangVersion"
+    compile "org.springframework:spring-jdbc:4.0.7.RELEASE"
+    compile "org.postgresql:postgresql:9.4-1200-jdbc41"
+
+    compile "org.hibernate:hibernate-validator:5.0.1.Final"
+    compile "org.apache.commons:commons-lang3:3.1"
 
     compile 'org.slf4j:slf4j-api:1.5.6'
 
-    compile "org.thymeleaf:thymeleaf-spring3:$thymeleafVersion"
-    compile "javax.servlet:jstl:$jstlVersion"
-    providedCompile "javax.servlet:javax.servlet-api:$servletApiVersion"
-    providedCompile "javax.servlet.jsp:jsp-api:$jspApiVersion"
-    providedCompile "javax.el:javax.el-api:$jspElVersion"
+    compile 'org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE'
+    compile "javax.servlet:jstl:1.2"
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+    providedCompile "javax.servlet.jsp:jsp-api:2.1"
+    providedCompile "javax.el:javax.el-api:2.2.4"
 
     providedCompile "com.github.jsimone:webapp-runner:8.0.30.2"
 
-    testCompile "junit:junit-dep:$junitVersion"
-    testCompile "org.springframework:spring-test:$springVersion"
-    testCompile "org.mockito:mockito-core:$mockitoVersion"
-    testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
+    testCompile "junit:junit-dep:4.11"
+    testCompile "org.springframework:spring-test:4.0.7.RELEASE"
+    testCompile "org.mockito:mockito-core:1.9.5"
+    testCompile "org.hamcrest:hamcrest-library:1.3"
 }
 
 repositories {
@@ -63,7 +64,9 @@ task stage {
     dependsOn copyTomcat
 }
 
-defaultTasks 'clean'
-task clean () {
+task cleanTreash () {
+    dependsOn clean
     delete 'out', 'build', 'target', 'classes'
 }
+
+tasks['test'].enabled=false;

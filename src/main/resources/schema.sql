@@ -1,14 +1,3 @@
--- Database: webstore
--- DROP DATABASE webstore;
-CREATE DATABASE webstore
-WITH OWNER = --your user
-ENCODING = 'UTF8'
-TABLESPACE = pg_default
-LC_COLLATE = 'en_US.UTF-8'
-LC_CTYPE = 'en_US.UTF-8'
-CONNECTION LIMIT = -1;
--- Table: users
--- DROP TABLE users;
 CREATE TABLE users
 (
   id serial NOT NULL,
@@ -24,12 +13,6 @@ CREATE TABLE users
 WITH (
   OIDS=FALSE
 );
--- should run script under correct user
--- ALTER TABLE users
--- OWNER TO postgres;
-
--- Table: goods
--- DROP TABLE goods;
 CREATE TABLE goods
 (
   id serial NOT NULL,
@@ -48,9 +31,6 @@ CREATE TABLE goods
 WITH (
 OIDS=FALSE
 );
--- should run script under correct user
--- ALTER TABLE goods
--- OWNER TO postgres;
 
 
 
