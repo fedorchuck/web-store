@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>web store</title>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}" />
+    <link rel="stylesheet"
+          type="text/css"
+          th:href="@{/resources/css/bootstrap.css}" />
+</head>
+<body>
+<div id="header" th:include="page :: header"></div>
+
+<div id="content">
+    <h1>SystemInfo</h1>
+    <!--/*@thymesVar id="mem" type="java.util.Map<String,Double>"*/-->
+    <div>
+        <p th:each="item : ${mem}">
+            <b th:text="${item.key}"></b>
+            <b>:</b>
+            <span th:text="${item.value}"></span>
+            <b>Mb</b>
+        </p>
+    </div>
+</div>
+<div id="footer" class="text-center" th:include="page :: copy"></div>
+</body>
+</html>
+
