@@ -16,69 +16,71 @@
           th:href="@{/resources/css/style.css}" />
 </head>
 <body>
-<div id="header" th:include="page :: header"></div>
+<header>
+    <div id="header" class="header" th:include="page :: header"></div>
+</header>
+
 <div id="content" class="container">
-    <h1>Register</h1>
-    <form method="POST" th:object="${user}" >
-      <div class="errors" th:if="${#fields.hasErrors('*')}">
-          <ul>
-              <li th:each="err : ${#fields.errors('*')}"
-                  th:text="${err}">Input is incorrect</li>
-          </ul>
-      </div>
-      <ul>
-          <li>
-              <label th:class="${#fields.hasErrors('firstName')}?'error'">First Name</label>:
-              <input type="text" th:field="*{firstName}" th:value="*{firstName}"
-                      th:class="${#fields.hasErrors('firstName')}?'error'"/>
-          </li>
-      </ul>
-      <ul>
-          <li>
-              <label th:class="${#fields.hasErrors('lastName')}?'error'">Last Name</label>:
-              <input type="text" th:field="*{lastName}" th:class="${#fields.hasErrors('lastName')}?'error'" />
-          </li>
-      </ul>
-      <ul>
-          <li>
-              <label th:class="${#fields.hasErrors('email')}?'error'">Email</label>:
-              <input type="text" th:field="*{email}"
-                     th:class="${#fields.hasErrors('email')}?'error'" />
-          </li>
-      </ul>
-      <ul>
-          <li>
-              <label th:class="${#fields.hasErrors('username')}? 'error'">Username</label>:
-              <input type="text" th:field="*{username}"
-                     th:class="${#fields.hasErrors('username')}? 'error'" />
-          </li>
-      </ul>
-      <ul>
-          <li>
-              <label th:class="${#fields.hasErrors('password')}? 'error'">Password</label>:
-              <input type="text" th:field="*{password}"
-                     th:class="${#fields.hasErrors('password')}? 'error'" />
-          </li>
-      </ul>
-      <!--<ul>
-          <li>
-              <label th:class="${#fields.hasErrors('role')}? 'error'">
-                  Role(0-admin; 1-customer; 2-logged users; 3-default user)</label>:
-              <input type="text" th:field="*{role}"
-                     th:class="${#fields.hasErrors('role')}? 'error'" />
-          </li>
-      </ul>-->
-      <!--<form method="POST" th:object="${searchRequest}" >th:action="@{/role}" id="role" role="form" -->
-          <!--<input type="hidden" th:field="*{id}"/>-->
+    <div style="display:flex;justify-content:center;align-items:center;">
+        <div>
+            <h2 class="text-center">Register</h2>
+            <form method="POST" th:object="${user}" >
+                <div class="errors" th:if="${#fields.hasErrors('*')}">
+                    <ul class="lists" style="list-style-type:none">
+                        <li th:each="err : ${#fields.errors('*')}"
+                          th:text="${err}">Input is incorrect</li>
+                    </ul>
+                </div>
+                <ul class="lists" style="list-style-type:none">
+                    <li>
+                        <label th:class="${#fields.hasErrors('firstName')}?'error'">First Name</label>:
+                        <input type="text" th:field="*{firstName}" th:value="*{firstName}"
+                        th:class="${#fields.hasErrors('firstName')}?'error'"/>
+                    </li>
+                    <li>
+                        <label th:class="${#fields.hasErrors('lastName')}?'error'">Last Name</label>:
+                        <input type="text" th:field="*{lastName}" th:class="${#fields.hasErrors('lastName')}?'error'" />
+                    </li>
+                    <li>
+                        <label th:class="${#fields.hasErrors('email')}?'error'">Email</label>:
+                        <input type="text" th:field="*{email}"
+                        th:class="${#fields.hasErrors('email')}?'error'" />
+                    </li>
+                    <li>
+                        <label th:class="${#fields.hasErrors('username')}? 'error'">Username</label>:
+                        <input type="text" th:field="*{username}"
+                        th:class="${#fields.hasErrors('username')}? 'error'" />
+                    </li>
+                    <li>
+                        <label th:class="${#fields.hasErrors('password')}? 'error'">Password</label>:
+                        <input type="text" th:field="*{password}"
+                        th:class="${#fields.hasErrors('password')}? 'error'" />
+                    </li>
+                    </ul>
+              <!--<ul>
+                  <li>
+                      <label th:class="${#fields.hasErrors('role')}? 'error'">
+                          Role(0-admin; 1-customer; 2-logged users; 3-default user)</label>:
+                      <input type="text" th:field="*{role}"
+                             th:class="${#fields.hasErrors('role')}? 'error'" />
+                  </li>
+              </ul>-->
+              <!--<form method="POST" th:object="${searchRequest}" >th:action="@{/role}" id="role" role="form" -->
+                  <!--<input type="hidden" th:field="*{id}"/>-->
 
-      <div class="radio" th:each="item : ${radioItems}">
-          <label>
-              <input type="radio" name="role" th:value="${item.value}" th:text="${item.key}" th:field="*{role}">radio</input>
-          </label>
-      </div>
+                <center>
+                    <div class="radio" th:each="item : ${radioItems}">
+                        <label>
+                            <input type="radio" name="role"
+                                   th:value="${item.value}" th:text="${item.key}" th:field="*{role}">radio</input>
+                        </label>
+                    </div>
 
-      <input type="submit" value="Register" />
-    </form>
+                    <input type="submit" value="Register" />
+                </center>
+            </form>
+        </div>
+    </div>
 </div>
 
 <footer>

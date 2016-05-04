@@ -17,6 +17,12 @@
                         </label>
                         <input type="submit" value="find" th:value="find" />
                     </form>
+                    <form method="POST" th:if="${userActions} == null" action="searchRequest">
+                        <label>
+                            <input type="text" name="searchRequest"/>
+                        </label>
+                        <input type="submit" value="find" th:value="find" />
+                    </form>
                 </div>
 
                 <div class="col-md-2 user-control">
