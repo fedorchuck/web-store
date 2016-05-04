@@ -27,6 +27,7 @@ import javax.validation.Valid;
 
 import fedorchuck.com.github.webstore.web.models.AuthorizeUser;
 import fedorchuck.com.github.webstore.domainmodels.Commodity;
+import fedorchuck.com.github.webstore.web.models.Session;
 import fedorchuck.com.github.webstore.web.models.UserActions;
 import fedorchuck.com.github.webstore.dao.CommodityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,7 @@ import fedorchuck.com.github.webstore.domainmodels.User;
 import fedorchuck.com.github.webstore.dao.UserRepository;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Scope("session")
@@ -52,29 +50,44 @@ public class UserController {
 
     private UserRepository userRepository;
     private CommodityRepository commodityRepository;
+    private Session session;
 
     @Autowired
-    public UserController(UserRepository userRepository, CommodityRepository commodityRepository) {
+    public UserController(UserRepository userRepository,
+                          CommodityRepository commodityRepository,
+                          Session session) {
         this.userRepository = userRepository;
         this.commodityRepository = commodityRepository;
+        this.session = session;
     }
 
     @RequestMapping(value="register", method=GET)
-    public ModelAndView showRegistrationForm(ModelAndView model) {
-        model.addObject(new User());
-        model.addObject("userActions", new UserActions());
-        model.addObject("radioItems", RADIO_ITEMS);
+    public ModelAndView showRegistrationForm() {
+        ModelAndView model;
+        if (session.getUser()!=null) {
+            model = new ModelAndView("redirect:/user/" + session.getUser().getUsername());
+            model.addObject("userActions", new UserActions());
+        } else {
+            model = new ModelAndView("registerForm");
+            model.addObject("user", new User());
+            model.addObject("userActions", new UserActions());
+            model.addObject("radioItems", RADIO_ITEMS);
+        }
 
-        model.setViewName("registerForm");
+        //model.setViewName("registerForm");
         return model;
     }
 
     @RequestMapping(value = "authorize", method = GET)
-    public ModelAndView showAuthorizationForm(ModelAndView model) {
-        model.addObject(new AuthorizeUser());
-        model.addObject("userActions", new UserActions());
-        model.setViewName("authorizeForm");
-        return model;
+    public ModelAndView showAuthorizationForm() {
+        if (session.getUser()!=null)
+            return new ModelAndView("redirect:/user/" + session.getUser().getUsername());
+        else {
+            ModelAndView model = new ModelAndView("authorizeForm");
+            model.addObject(new AuthorizeUser());
+            model.addObject("userActions", new UserActions());
+            return model;
+        }
     }
 
     @RequestMapping(value="register", method=POST)
@@ -114,7 +127,9 @@ public class UserController {
             valid = true;
         }
         if (valid) {
-            ModelAndView model = new ModelAndView("redirect:/user/" + authorizeUser.getUser(userRepository).getUsername());
+            User user = authorizeUser.getUser(userRepository);
+            ModelAndView model = new ModelAndView("redirect:/user/" + user.getUsername());
+            session.setUser(user);
             model.addObject("userActions", new UserActions());
             return model;
         } else {
@@ -126,11 +141,15 @@ public class UserController {
 
     @RequestMapping(value="/{username}", method=GET)
     public ModelAndView showUserProfile(@PathVariable String username) {
-        User user = userRepository.findByUsername(username);
-        ModelAndView model = new ModelAndView("profile");
-        model.addObject(user);
-        model.addObject("userActions", new UserActions());
-        return model;
+        if (!Objects.equals(session.getUser().getUsername(), username))
+            return new ModelAndView("authorizeForm");
+        else {
+            User user = userRepository.findByUsername(username);
+            ModelAndView model = new ModelAndView("profile");
+            model.addObject(user);
+            model.addObject("userActions", new UserActions());
+            return model;
+        }
     }
 
     final static Map<String, Integer> RADIO_ITEMS = Collections.unmodifiableMap(

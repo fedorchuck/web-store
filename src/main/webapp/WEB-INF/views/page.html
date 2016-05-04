@@ -11,7 +11,7 @@
                 </div>
                 <div class="col-md-7 search-panel text-center">
                     <!--/*@thymesVar id="userActions" type="fedorchuck.com.github.webstore.web.models.UserActions"*/-->
-                    <form method="POST" th:object="${userActions}" action="searchRequest" >
+                    <form method="POST" th:if="${userActions} != null" th:object="${userActions}" action="searchRequest" >
                         <label>
                             <input type="text" th:field="*{searchRequest}"/>
                         </label>

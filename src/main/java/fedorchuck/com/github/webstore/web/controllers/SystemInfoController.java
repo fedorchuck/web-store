@@ -32,7 +32,7 @@ public class SystemInfoController {
 
         model.getModel().put("mem",mem);
 
-        model.addObject("userActions", new UserActions());
+        //model.addObject("userActions", new UserActions());
 
         return model;
     }
