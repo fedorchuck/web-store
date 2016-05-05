@@ -28,9 +28,17 @@
                 <div class="col-md-2 user-control">
                     <div class="row">
                         <div class="text-lowercase text-center">
-                            <a th:href="@{/user/authorize}">Log in</a>
-                            <span>or</span>
-                            <a th:href="@{/user/register}">Sign up</a>
+                            <div th:if="${session.session.user}==null">
+                                <a th:href="@{/user/authorize}">Log in</a>
+                                <span>or</span>
+                                <a th:href="@{/user/register}">Sign up</a>
+                            </div>
+                            <div th:if="${session.session.user}!=null">
+                                <a th:href="@{/user/}+${session.session.getUser().getUsername()}"
+                                   th:text="${session.session.getUser().getUsername()}">user</a>
+                                <span>|</span>
+                                <a th:href="@{/user/logout}">Log out</a>
+                            </div>
                         </div>
                     </div>
                 </div>

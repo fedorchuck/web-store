@@ -23,6 +23,7 @@ package fedorchuck.com.github.webstore.web.controllers;
 
 import fedorchuck.com.github.webstore.domainmodels.Category;
 import fedorchuck.com.github.webstore.domainmodels.Commodity;
+import fedorchuck.com.github.webstore.web.models.Session;
 import fedorchuck.com.github.webstore.web.models.UserActions;
 import fedorchuck.com.github.webstore.dao.CommodityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -41,14 +43,19 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class HomeController {
 
     private CommodityRepository commodityRepository;
+    private Session session;
 
     @Autowired
-    public HomeController(CommodityRepository commodityRepository) {
+    public HomeController(CommodityRepository commodityRepository,
+                          Session session) {
         this.commodityRepository = commodityRepository;
+        this.session = session;
     }
 
     @RequestMapping(method = GET)
-    public ModelAndView home() {
+    public ModelAndView home(HttpServletRequest request) {
+        request.getSession().setAttribute("session", session);
+
         ModelAndView model = new ModelAndView("index");
         model.addObject(new Commodity());
         model.addObject("userActions", new UserActions());

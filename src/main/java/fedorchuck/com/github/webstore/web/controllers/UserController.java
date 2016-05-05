@@ -23,6 +23,7 @@ package fedorchuck.com.github.webstore.web.controllers;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import fedorchuck.com.github.webstore.web.models.AuthorizeUser;
@@ -73,8 +74,6 @@ public class UserController {
             model.addObject("userActions", new UserActions());
             model.addObject("radioItems", RADIO_ITEMS);
         }
-
-        //model.setViewName("registerForm");
         return model;
     }
 
@@ -90,18 +89,32 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "logout", method = GET)
+    public ModelAndView showLogOut(HttpServletRequest request){
+        ModelAndView model = new ModelAndView("authorizeForm");
+        model.addObject(new AuthorizeUser());
+        model.addObject("userActions", new UserActions());
+        session.setUser(null);
+        request.getSession().setAttribute("session", session);
+        return model;
+    }
+
     @RequestMapping(value="register", method=POST)
     public ModelAndView processRegistration(
             @Valid User user,
-            Errors errors) {
+            Errors errors,
+            HttpServletRequest request) {
+        ModelAndView model;
         if (errors.hasErrors()) {
-            ModelAndView model = new ModelAndView("registerForm");
+             model = new ModelAndView("registerForm");
             model.addObject("userActions", new UserActions());
             model.addObject("radioItems", RADIO_ITEMS);
             return model;
         }
         userRepository.save(user);
-        ModelAndView model = new ModelAndView("redirect:/user/" + user.getUsername());
+        session.setUser(user);
+        request.getSession().setAttribute("session",session);
+        model = new ModelAndView("redirect:/user/" + user.getUsername());
         model.addObject("userActions", new UserActions());
         return model;
     }
@@ -118,7 +131,8 @@ public class UserController {
     @RequestMapping(value="authorize", method=POST)
     public ModelAndView processAuthorization(
             @Valid AuthorizeUser authorizeUser,
-            Errors errors) {
+            Errors errors,
+            HttpServletRequest request) {
         boolean valid = false;
         if (errors.hasErrors()) {
             valid = false;
@@ -131,6 +145,7 @@ public class UserController {
             ModelAndView model = new ModelAndView("redirect:/user/" + user.getUsername());
             session.setUser(user);
             model.addObject("userActions", new UserActions());
+            request.getSession().setAttribute("session", session);
             return model;
         } else {
             ModelAndView model = new ModelAndView("authorizeForm");
@@ -140,7 +155,8 @@ public class UserController {
     }
 
     @RequestMapping(value="/{username}", method=GET)
-    public ModelAndView showUserProfile(@PathVariable String username) {
+    public ModelAndView showUserProfile(@PathVariable String username,
+                                        HttpServletRequest request) {
         if (!Objects.equals(session.getUser().getUsername(), username))
             return new ModelAndView("authorizeForm");
         else {
@@ -148,6 +164,9 @@ public class UserController {
             ModelAndView model = new ModelAndView("profile");
             model.addObject(user);
             model.addObject("userActions", new UserActions());
+
+            session.setUser(user);
+            request.getSession().setAttribute("session", session);
             return model;
         }
     }
