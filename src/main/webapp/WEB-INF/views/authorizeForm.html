@@ -14,7 +14,7 @@
           th:href="@{/resources/css/bootstrap.css}" />
     <link rel="stylesheet"
           type="text/css"
-          th:href="@{/resources/css/style.css}" />
+          th:href="@{/resources/css/custom.css}" />
 </head>
 <body>
 <header>
@@ -25,30 +25,39 @@
     <div style="display:flex;justify-content:center;align-items:center;">
         <div>
             <h2 class="text-center">Log in to your account</h2>
-            <form th:object="${authorizeUser}" method="POST" >
-                <div class="errors" th:if="${#fields.hasErrors('*')}">
-                    <ul class="lists" style="list-style-type:none">
-                        <li th:each="err : ${#fields.errors('*')}"
-                            th:text="${err}">Input is incorrect</li>
-                    </ul>
-                </div>
-                <ul class="lists" style="list-style-type:none">
-                    <li>
-                        <label th:class="${#fields.hasErrors('username')}? 'error'">Username</label>:
-                        <input type="text" th:field="*{username}"
-                               th:class="${#fields.hasErrors('username')}? 'error'" />
-                    </li>
-                    <li>
-                        <label th:class="${#fields.hasErrors('password')}? 'error'">Password</label>:
-                        <input type="text" th:field="*{password}"
-                               th:class="${#fields.hasErrors('password')}? 'error'" />
-                    </li>
-                </ul>
-                <ul>
-                    <center>
-                        <input type="submit" value="Log In" />
-                    </center>
-                </ul>
+            <div class="hide">
+            <!--<form th:object="${authorizeUser}" method="POST" >-->
+                <!--<div class="errors" th:if="${#fields.hasErrors('*')}">-->
+                    <!--<ul class="lists" style="list-style-type:none">-->
+                        <!--<li th:each="err : ${#fields.errors('*')}"-->
+                            <!--th:text="${err}">Input is incorrect</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<ul class="lists" style="list-style-type:none">-->
+                    <!--<li>-->
+                        <!--<label th:class="${#fields.hasErrors('username')}? 'error'">Username</label>:-->
+                        <!--<input type="text" th:field="*{username}"-->
+                               <!--th:class="${#fields.hasErrors('username')}? 'error'" />-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<label th:class="${#fields.hasErrors('password')}? 'error'">Password</label>:-->
+                        <!--<input type="text" th:field="*{password}"-->
+                               <!--th:class="${#fields.hasErrors('password')}? 'error'" />-->
+                    <!--</li>-->
+                <!--</ul>-->
+                <!--<ul>-->
+                    <!--<center>-->
+                        <!--<input type="submit" value="Log In" />-->
+                    <!--</center>-->
+                <!--</ul>-->
+            <!--</form>--></div>
+            <p th:if="${loginError}">Wrong user or password</p>
+            <form th:action="@{/j_spring_security_check}" method="post">
+                <label for="j_username">Username </label>:
+                <input class="form-control" type="text" id="j_username" name="j_username" /> <br />
+                <label for="j_password">Password </label>:
+                <input class="form-control" type="password" id="j_password" name="j_password" /> <br />
+                <button class="btn btn-lg btn-primary btn-block" type="submit" value="Log in" >Log in</button>
             </form>
         </div>
     </div>

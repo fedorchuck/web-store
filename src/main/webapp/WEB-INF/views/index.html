@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<!--xmlns:sec="http://www.springframework.org/security/tags"-->
 <head>
     <title>web store</title>
     <meta charset="utf-8"/>
@@ -14,7 +16,7 @@
         th:href="@{/resources/css/bootstrap.css}" />
     <link rel="stylesheet"
           type="text/css"
-          th:href="@{/resources/css/style.css}" />
+          th:href="@{/resources/css/custom.css}" />
 </head>
 <body>
 <header>
@@ -32,10 +34,23 @@
                 <div class="descriptionMessage" th:include="message::description"></div>
             </div>
             <div class="row">
+                <!--TODO: <<sec>>. reason: see fedorchuck.com.github.webstore.web.WebConfig: @Bean templateEngine-->
+                <!--<sec:authorize access="isAuthenticated()">-->
+                    <!--<p><sec:authentication property="principal.username" /></p>-->
+                <!--</sec:authorize>-->
+
                 <div class="text-center">
                     <a th:href="@{/goods/add}">add goods</a>
                     <br/>
                 </div>
+
+                <div th:if="${#httpServletRequest.remoteUser != null}">
+                    check spring security.
+                    <p th:text="${#httpServletRequest.remoteUser}">
+                        sample_user
+                    </p>
+                </div>
+
             </div>
         </div>
     </div>

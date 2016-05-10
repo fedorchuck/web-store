@@ -10,7 +10,7 @@
                     <a th:href="@{/}"><h2>web store</h2></a>
                 </div>
                 <div class="col-md-7 search-panel text-center">
-                    <!--/*@thymesVar id="userActions" type="fedorchuck.com.github.webstore.web.models.UserActions"*/-->
+                    <!--/*@thymesVar id="userActions" type="com.github.fedorchuck.webstore.web.models.UserActions"*/-->
                     <form method="POST" th:if="${userActions} != null" th:object="${userActions}" action="searchRequest" >
                         <label>
                             <input type="text" th:field="*{searchRequest}"/>
@@ -28,17 +28,28 @@
                 <div class="col-md-2 user-control">
                     <div class="row">
                         <div class="text-lowercase text-center">
-                            <div th:if="${session.session.user}==null">
+                            <div th:if="${#httpServletRequest.remoteUser == null}">
                                 <a th:href="@{/user/authorize}">Log in</a>
                                 <span>or</span>
                                 <a th:href="@{/user/register}">Sign up</a>
                             </div>
-                            <div th:if="${session.session.user}!=null">
-                                <a th:href="@{/user/}+${session.session.getUser().getUsername()}"
-                                   th:text="${session.session.getUser().getUsername()}">user</a>
+                            <div th:if="${#httpServletRequest.remoteUser != null}">
+                                <a th:href="@{/user/}+${#httpServletRequest.remoteUser}"
+                                th:text="${#httpServletRequest.remoteUser}">user</a>
                                 <span>|</span>
-                                <a th:href="@{/user/logout}">Log out</a>
+                                <a th:href="@{/logout}">Log out</a>
                             </div>
+                            <!--<div th:if="${session.session.user}==null">-->
+                                <!--<a th:href="@{/user/authorize}">Log in</a>-->
+                                <!--<span>or</span>-->
+                                <!--<a th:href="@{/user/register}">Sign up</a>-->
+                            <!--</div>-->
+                            <!--<div th:if="${session.session.user}!=null">-->
+                                <!--<a th:href="@{/user/}+${session.session.getUser().getUsername()}"-->
+                                   <!--th:text="${session.session.getUser().getUsername()}">user</a>-->
+                                <!--<span>|</span>-->
+                                <!--<a th:href="@{/user/logout}">Log out</a>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
@@ -55,7 +66,7 @@
                 <div class="text-center">
                     <h5>
                         &copy; 2016
-                        <a href="https://github.com/fedorchuck"> Volodymyr Fedorchuk </a>
+                        <a href="http://vl-fedorchuck.rhcloud.com/"> Volodymyr Fedorchuk </a>
                         <a href="http://www.gnu.org/licenses/gpl-3.0.en.html"> License </a>
                         <a href="https://github.com/fedorchuck/web-store#web-store"> Source </a>
                     </h5>
