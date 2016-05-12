@@ -34,10 +34,11 @@
                                 <a th:href="@{/user/register}">Sign up</a>
                             </div>
                             <div th:if="${#httpServletRequest.remoteUser != null}">
-                                <a th:href="@{/user/}+${#httpServletRequest.remoteUser}"
+                                <a th:href="@{'/user/'+${#httpServletRequest.remoteUser}}"
                                 th:text="${#httpServletRequest.remoteUser}">user</a>
                                 <span>|</span>
-                                <a th:href="@{/logout}">Log out</a>
+                                <!--<a th:href="@{/logout}">Log out</a>-->
+                                <a th:href="@{/user/logout}">Log out</a>
                             </div>
                             <!--<div th:if="${session.session.user}==null">-->
                                 <!--<a th:href="@{/user/authorize}">Log in</a>-->

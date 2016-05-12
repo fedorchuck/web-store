@@ -129,7 +129,7 @@ public class UserController {
         return model;
     }
 
-    @RequestMapping(value="authorize", method=POST)
+    @RequestMapping(value="authorize", method=POST)//j_spring_security_check
     public ModelAndView processAuthorization(
             @Valid AuthorizeUser authorizeUser,
             Errors errors,
