@@ -158,9 +158,10 @@ public class UserController {
     @RequestMapping(value="/{username}", method=GET)
     public ModelAndView showUserProfile(@PathVariable String username,
                                         HttpServletRequest request) {
-        if (!Objects.equals(session.getUser().getUsername(), username))
-            return new ModelAndView("authorizeForm");
-        else {
+        //TODO: fix it. just authorize user can see user-profile
+//        if (!Objects.equals(session.getUser().getUsername(), username))
+//            return new ModelAndView("authorizeForm");
+//        else {
             User user = userRepository.findByUsername(username);
             ModelAndView model = new ModelAndView("profile");
             model.addObject(user);
@@ -169,7 +170,7 @@ public class UserController {
             session.setUser(user);
             request.getSession().setAttribute("session", session);
             return model;
-        }
+//        }
     }
 
     final static Map<String, Integer> RADIO_ITEMS = Collections.unmodifiableMap(

@@ -53,6 +53,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public SpringTemplateEngine templateEngine(TemplateResolver templateResolver) {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
+        templateEngine.addDialect(new org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect());
         /*
         org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect
         https://github.com/thymeleaf/thymeleaf-extras-springsecurity

@@ -18,6 +18,7 @@ dependencies {
     compile 'org.springframework.security:spring-security-web:4.1.0.RELEASE'
     compile 'org.springframework.security:spring-security-config:4.1.0.RELEASE'
     compile 'org.springframework.security:spring-security-taglibs:4.1.0.RELEASE'
+    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE'
 
     compile 'org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE'
     compile "javax.servlet:jstl:1.2"

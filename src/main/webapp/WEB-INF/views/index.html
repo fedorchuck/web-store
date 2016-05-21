@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<!--xmlns:sec="http://www.springframework.org/security/tags"-->
 <head>
     <title>web store</title>
     <meta charset="utf-8"/>
@@ -34,10 +33,13 @@
                 <div class="descriptionMessage" th:include="message::description"></div>
             </div>
             <div class="row">
-                <!--TODO: <<sec>>. reason: see fedorchuck.com.github.webstore.web.WebConfig: @Bean templateEngine-->
-                <!--<sec:authorize access="isAuthenticated()">-->
-                    <!--<p><sec:authentication property="principal.username" /></p>-->
-                <!--</sec:authorize>-->
+
+                <div sec:authorize="isAuthenticated()">
+                isAuth
+                </div>
+                <div sec:authorize="isAnonymous()">
+                anon
+                </div>
 
                 <div class="text-center">
                     <a th:href="@{/goods/add}">add goods</a>
@@ -49,6 +51,9 @@
                     <p th:text="${#httpServletRequest.remoteUser}">
                         sample_user
                     </p>
+                </div>
+                <div th:text="${#authentication.name}">
+                    The value of the "name" property of the authentication object should appear here.
                 </div>
 
             </div>

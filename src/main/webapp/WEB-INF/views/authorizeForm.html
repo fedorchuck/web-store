@@ -23,7 +23,7 @@
 
 <div id="content" class="container">
     <div style="display:flex;justify-content:center;align-items:center;">
-        <div>
+        <div class="form-signin">
             <h2 class="text-center">Log in to your account</h2>
             <div class="hide">
             <!--<form th:object="${authorizeUser}" method="POST" >-->
@@ -53,10 +53,10 @@
             <!--</form>--></div>
             <p th:if="${loginError}">Wrong user or password</p>
             <form th:action="@{/j_spring_security_check}" method="post">
-                <label for="j_username">Username </label>:
-                <input class="form-control" type="text" id="j_username" name="j_username" /> <br />
-                <label for="j_password">Password </label>:
-                <input class="form-control" type="password" id="j_password" name="j_password" /> <br />
+                <label for="j_username" class="sr-only">Email address</label>
+                <input class="form-control" placeholder="Email address" type="text" id="j_username" name="j_username" /> <br />
+                <label for="j_password" class="sr-only">Password</label>
+                <input class="form-control" placeholder="Password" type="password" id="j_password" name="j_password" /> <br />
                 <button class="btn btn-lg btn-primary btn-block" type="submit" value="Log in" >Log in</button>
             </form>
         </div>
